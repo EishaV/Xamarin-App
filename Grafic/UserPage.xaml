@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+			       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+			       x:Class="XamarinApp.UserPage"
+			       Title="User">
+	<ContentPage.Content>
+    <StackLayout HorizontalOptions="StartAndExpand">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*" />
+          <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Label Text="Uuid" Grid.Row="0" Grid.Column="0" />
+        <Entry x:Name="uuid" IsEnabled="False" Grid.Row="0" Grid.Column="1" />
+        <Label Text="Email" Grid.Row="1" Grid.Column="0" />
+        <Entry Placeholder="name@domain.ext" Keyboard="Email" x:Name="email" IsSpellCheckEnabled="False" Grid.Row="1" Grid.Column="1" />
+        <Label Text="Kennwort" Grid.Row="2" Grid.Column="0" />
+        <Entry Placeholder="password" Keyboard="Text" x:Name="pass" IsPassword="True" Grid.Row="2" Grid.Column="1"/>
+      </Grid>
+      <Button Text="Login" Clicked="OnLoginClicked" />
+    </StackLayout>
+  </ContentPage.Content>
+</ContentPage> 
