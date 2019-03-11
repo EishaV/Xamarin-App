@@ -1,0 +1,103 @@
+<script>
+	var type, token, name, mower, serial;
+	
+  function otClicked() {
+    var user = document.getElementById('user').value;
+    var pass = document.getElementById('pass').value;
+
+    document.getElementById('text').innerHTML += '<p> User: ' + user + '</p>';
+    var post = JSON.stringify({
+      "client_id"   : 1,
+      "client_secret" : "nCH3A0WvMYn66vGorjSrnGZ2YtjQWDiCvjg7jNxK",
+      "grant_type"  : "password",
+      "username"    : user,
+      "password"    : pass,
+      "scope"         : "*",
+    })
+    console.log(post);
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        
+        var data = JSON.parse(this.responseText);
+        type = data.token_type;
+        token = data.access_token;
+        document.getElementById('text').innerHTML += '<p> Login: ' + type + ' ...</p>';
+        if( type ) {
+          document.getElementById('me').disabled = false;
+          document.getElementById('pi').disabled = false;
+        }
+      }
+    };
+    req.open("POST", "https://api.worxlandroid.com/api/v2/oauth/token");
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send(post);    
+  }
+  function meClicked() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        
+        var data = JSON.parse(this.responseText);
+        name = data.name;
+        document.getElementById('text').innerHTML += '<p> Profil: ' + name + '</p>';
+      }
+    };
+    req.open("GET", "https://api.worxlandroid.com/api/v2/users/me");
+    req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader("Authorization", type + " " + token);
+    req.send();    
+  }  
+  function piClicked() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        
+        var data = JSON.parse(this.responseText);
+        mower = data[0].name;
+        serial = data[0].serial_number;
+        document.getElementById('text').innerHTML += '<p> Produkt: ' + mower + ' ' + serial + '</p>';
+        if( serial ) {
+          document.getElementById('gs').disabled = false;
+        }
+        
+      }
+    };
+    req.open("GET", "https://api.worxlandroid.com/api/v2/product-items");
+    req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader("Authorization", type + " " + token);
+    req.send();    
+  }  
+  function gsClicked() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        
+        var data = JSON.parse(this.responseText);
+        var text = data.dat.le + ' ' + data.dat.ls + ' um ' + data.cfg.tm;
+        document.getElementById('text').innerHTML += '<p> Status: ' + text + '</p>';
+      }
+    };
+    req.open("GET", "https://api.worxlandroid.com/api/v2/product-items/" + serial + "/status");
+    req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader("Authorization", type + " " + token);
+    req.send();    
+  }  
+</script>
+
+<p>
+ User: <input type="edit" id="user" name="edUser" value="" />
+ Pass: <input type="edit" id="pass" name="edPass" value="" />
+</p>
+<p>
+ <button type="button" id="ot" name="pbOt" onclick="otClicked();">Login</button>
+ <button type="button" id="me" name="pbMe" onclick="meClicked();" disabled>Profil</button>
+ <button type="button" id="pi" name="pbPi" onclick="piClicked();" disabled>Produkte</button>
+ <button type="button" id="gs" name="pbGs" onclick="gsClicked();" disabled>Status</button>
+</p>
+<p><output id="text"></output></p>
