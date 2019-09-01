@@ -6,7 +6,7 @@ namespace XamarinApp
 	{
 		public TodayPageCS ()
 		{
-			Icon = "today.png";
+			IconImageSource = "today.png";
 			Title = "Today";
 			Content = new StackLayout { 
 				Children = {

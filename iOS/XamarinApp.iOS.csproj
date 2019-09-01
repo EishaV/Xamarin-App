@@ -65,7 +65,7 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -74,7 +74,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TabbedPageWithNavigationPage\XamarinApp.csproj">
+    <ProjectReference Include="..\Grafic\XamarinApp.csproj">
       <Project>{52C39E86-FBDF-400B-9419-88040AA0C954}</Project>
       <Name>XamarinApp</Name>
     </ProjectReference>

@@ -6,7 +6,7 @@ namespace XamarinApp
 	{
 		public TracePageCS ()
 		{
-			Icon = "settings.png";
+			IconImageSource = "settings.png";
 			Title = "Settings";
 			Content = new StackLayout { 
 				Children = {

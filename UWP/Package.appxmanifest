@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="a0952718-bfc0-4268-91bf-e8f4364b6879"
-    Publisher="CN=Dave"
+    Name="d48f0ecb-1a6f-4225-876b-373eefdecbdf"
+    Publisher="CN=Sven"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="a0952718-bfc0-4268-91bf-e8f4364b6879" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="d48f0ecb-1a6f-4225-876b-373eefdecbdf" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>TabbedPageWithNavigationPage.UWP</DisplayName>
-    <PublisherDisplayName>Dave</PublisherDisplayName>
+    <DisplayName>UWP</DisplayName>
+    <PublisherDisplayName>Sven</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="TabbedPageWithNavigationPage.UWP.App">
+      EntryPoint="UWP.App">
       <uap:VisualElements
-        DisplayName="TabbedPageWithNavigationPage.UWP"
+        DisplayName="UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="TabbedPageWithNavigationPage.UWP"
+        Description="UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
