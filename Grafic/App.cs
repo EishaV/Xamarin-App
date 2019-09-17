@@ -7,6 +7,7 @@ namespace XamarinApp
 		public App ()
 		{
 			MainPage = new XamarinApp.MainPage ();
+      ViewModel vm = ViewModel.Instance;
 		}
 
 		protected override void OnStart ()

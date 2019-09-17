@@ -8,6 +8,7 @@ namespace XamarinApp
 		{
 			Children.Add (new TodayPageCS ());
 			Children.Add (new UserPageCS());
+      Children.Add(new StatusPage());
 			Children.Add (new TracePageCS());
 		}
 	}

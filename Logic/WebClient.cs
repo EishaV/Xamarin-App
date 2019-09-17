@@ -106,12 +106,10 @@ namespace Logic {
     private string _webapi, _token;
     private System.Net.WebClient _client = new System.Net.WebClient();
 
-    public ErrDelegate Err;
     public LsMqtt Data;
 
     public List<LsProductItem> Products = new List<LsProductItem>();
     public string Broker { get; private set; }
-    public string MacAdr { get; private set; }
     public X509Certificate2 Cert { get; private set; }
 
     public WebClient(string webapi, string token) {
@@ -146,7 +144,7 @@ namespace Logic {
           ms.Close();
         }
       } catch( Exception ex ) {
-        Err(ex.Message);
+        UI.Err(ex.Message);
         UI.Log(ex.ToString(), 9);
         return false;
       }
@@ -195,11 +193,10 @@ namespace Logic {
           buf = Convert.FromBase64String(str);
           Store.SaveBytes("AWS.p12", buf);
           Cert = new X509Certificate2(buf);
-          string mac = Products.Count > 0 ? Products[0].MacAdr.Substring(5) : "000000";
         }
         #endregion
       } catch( Exception ex ) {
-        Err(ex.Message);
+        UI.Err(ex.Message);
         UI.Log(ex.ToString(), 9);
         return false;
       }

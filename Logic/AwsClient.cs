@@ -13,7 +13,7 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 using BackEnd;
 
 namespace Logic {
-  class AwsClient {
+  public class AwsClient {
     private MqttClient _mqtt = null;
 
     private string _broker, _uuid, _board, _mac;

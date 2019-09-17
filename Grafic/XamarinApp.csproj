@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MainPageCS.cs" />
+    <Compile Remove="TodayPageCS.cs" />
+    <Compile Remove="TracePageCS.cs" />
+    <Compile Remove="UpcomingAppointmentsPageCS.cs" />
+    <Compile Remove="UserPageCS.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.1.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
   </ItemGroup>

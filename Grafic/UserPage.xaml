@@ -16,11 +16,11 @@
           <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Label Text="Uuid" Grid.Row="0" Grid.Column="0" />
-        <Entry x:Name="uuid" IsEnabled="False" Grid.Row="0" Grid.Column="1" />
+        <Entry Text="{Binding Uuid}" IsEnabled="False" Grid.Row="0" Grid.Column="1" />
         <Label Text="Email" Grid.Row="1" Grid.Column="0" />
-        <Entry Placeholder="name@domain.ext" Keyboard="Email" x:Name="email" IsSpellCheckEnabled="False" Grid.Row="1" Grid.Column="1" />
+        <Entry Text="{Binding Email}" Placeholder="name@domain.ext" Keyboard="Email" IsSpellCheckEnabled="False" Grid.Row="1" Grid.Column="1" />
         <Label Text="Kennwort" Grid.Row="2" Grid.Column="0" />
-        <Entry Placeholder="password" Keyboard="Text" x:Name="pass" IsPassword="True" Grid.Row="2" Grid.Column="1"/>
+        <Entry Text="{Binding Pass}" Placeholder="password" Keyboard="Text" IsPassword="True" Grid.Row="2" Grid.Column="1"/>
       </Grid>
       <Button Text="Login" Clicked="OnLoginClicked" />
     </StackLayout>
