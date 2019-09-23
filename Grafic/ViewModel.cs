@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Windows.Input;
 
 using Logic;
+using MqttJson;
+using Xamarin.Forms;
 
 namespace XamarinApp {
   [DataContract]
@@ -16,7 +20,8 @@ namespace XamarinApp {
     [DataMember(Name = "pass")] public string Password;
     [DataMember(Name = "name")] public string Name;
     [DataMember(Name = "broker")] public string Broker;
-    [DataMember(Name = "mac")] public string MacAdr;
+    [DataMember(Name = "cmdin")] public string CmdIn;
+    [DataMember(Name = "cmdout")] public string CmdOut;
   }
 
   public class BaseView : INotifyPropertyChanged {
@@ -25,6 +30,15 @@ namespace XamarinApp {
     protected void OnPropertyChanged(string propertyName) {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+  }
+
+  public class Mower {
+    public String State { get; set; }
+    public String Error { get; set; }
+    public String Firmware { get; set; }
+    public int Rrsi { get; set; }
+
+    public Battery Accu { get; set; }
   }
 
   public class ViewModel : BaseView {
@@ -47,6 +61,11 @@ namespace XamarinApp {
       set { _pass = value; OnPropertyChanged(nameof(Pass)); }
     }
 
+    WebClient _wc = null;
+    AwsClient _ac = null;
+
+    public List<Mower> Mowers { get; private set; }
+    public Mower Mower { get; private set; }
     public class TraceItem {
       public string Name { get; set; }
       public string Text { get; set; }
@@ -59,11 +78,23 @@ namespace XamarinApp {
 
     public ObservableCollection<TraceItem> TraceItems { get { return _TraceItems; } }
 
+    public ICommand PollCommand { protected set; get; }
 
     string AppData;
     string CfgFile;
 
     public ViewModel() {
+      PollCommand = new Command(() => _ac.Poll() );
+
+      //Mowers = new List<Mower>();
+      Mower = new Mower() {
+        Error = "io",
+        State = "daheim",
+        Rrsi = -70,
+        Firmware = "3.51",
+        Accu = new Battery { Temp = 25, Volt = 20.5F }
+      };
+
       TraceItems.Add(new TraceItem("Test", "irgenwas sollte da stehen"));
 
       AppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -103,24 +134,33 @@ namespace XamarinApp {
       else TraceItems.Add(new TraceItem(s.Substring(0, pos), s.Substring(pos+2)));
     }
     void Err(String s) {
-      //DisplayAlert("Error", s, "OK");
+      App.Current.MainPage.DisplayAlert("Error", s, "OK");
+    }
+
+    private void Recv(LsMqtt mqtt) {
+      //Invoke(new MqttDelegate(RecvInvoke));
+      Mower.State = mqtt.Dat.LastState.ToString();
+      Mower.Error = mqtt.Dat.LastError.ToString();
+      OnPropertyChanged(nameof(Mower));
+      Mower.Accu = mqtt.Dat.Battery;
+      OnPropertyChanged(nameof(Mower));
     }
 
     public void Login() {
-      WebClient wc = new WebClient("https://api.worxlandroid.com/api/v2/", "nCH3A0WvMYn66vGorjSrnGZ2YtjQWDiCvjg7jNxK");
+      _wc = new WebClient("https://api.worxlandroid.com/api/v2/", "nCH3A0WvMYn66vGorjSrnGZ2YtjQWDiCvjg7jNxK");
       UI.SetLog(Log);
       UI.SetErr(Err);
+      UI.SetRecv(Recv);
 
-      if( wc.Login(Email, Pass, Uuid) ) {
-        Log($"Broker {wc.Broker}");
+      if( _wc.Login(Email, Pass, Uuid) ) {
+        Log($"Broker {_wc.Broker}");
 
-        if( wc.Broker != null && wc.Cert != null && wc.Products != null && wc.Products.Count > 0 ) {
-          AwsClient aws = new AwsClient(wc.Broker, Uuid, wc.Cert, "DB510", wc.Products[0].MacAdr);
+        if( _wc.Broker != null && _wc.Cert != null && _wc.Products != null && _wc.Products.Count > 0 ) {
+          LsProductItem pi = _wc.Products[0];
 
-          aws.Start(true);
-
+          _ac = new AwsClient(_wc.Broker, Uuid, _wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
+          _ac.Start(true);
         }
-
       }
 
       LsJson x = new LsJson();
@@ -134,6 +174,10 @@ namespace XamarinApp {
 
       dcjs.WriteObject(fs, x);
       fs.Close();
+    }
+
+    public void Logout() {
+      if( _ac != null && _ac.Connected ) _ac.Exit();
     }
   }
 }

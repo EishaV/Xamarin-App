@@ -7,7 +7,7 @@ namespace XamarinApp
 		public App ()
 		{
 			MainPage = new XamarinApp.MainPage ();
-      ViewModel vm = ViewModel.Instance;
+      //ViewModel vm = ViewModel.Instance;
 		}
 
 		protected override void OnStart ()
@@ -17,6 +17,7 @@ namespace XamarinApp
 
 		protected override void OnSleep ()
 		{
+      ViewModel.Instance.Logout();
 			// Handle when your app sleeps
 		}
 

@@ -11,7 +11,6 @@ namespace XamarinApp {
 
     public UserPage() {
       InitializeComponent();
-
       BindingContext = ViewModel.Instance;
     }
 

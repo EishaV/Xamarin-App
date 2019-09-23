@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace XamarinApp
-{
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StatusPage : ContentPage
-	{
-		public StatusPage ()
-		{
-			InitializeComponent ();
-		}
-	}
+namespace XamarinApp {
+  [XamlCompilation(XamlCompilationOptions.Compile)]
+  public partial class StatusPage : ContentPage {
+    public StatusPage() {
+      InitializeComponent();
+      BindingContext = ViewModel.Instance;
+    }
+  }
 }

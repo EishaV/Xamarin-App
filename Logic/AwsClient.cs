@@ -16,7 +16,7 @@ namespace Logic {
   public class AwsClient {
     private MqttClient _mqtt = null;
 
-    private string _broker, _uuid, _board, _mac;
+    private string _broker, _uuid;
     private X509Certificate2 _cert;
     private string _cmdIn;
     private string[] _cmdOut;
@@ -24,8 +24,9 @@ namespace Logic {
     private ushort _msgId = 0;
     private bool _msgPoll = false;
 
-    public AwsClient(string broker, string uuid, X509Certificate2 cert, string board, string mac) {
-      _broker = broker; _uuid = "android-" + uuid; _cert = cert; _board = board; _mac = mac;
+    public AwsClient(string broker, string uuid, X509Certificate2 cert, string cmdIn, string cmdOut) {
+      _broker = broker; _uuid = "android-" + uuid; _cert = cert;
+      _cmdIn = cmdIn; _cmdOut = new string[] { cmdOut };
     }
 
     public bool LoadCert() {
@@ -38,9 +39,6 @@ namespace Logic {
       return false;
     }
     public bool Start(bool first = true) {
-      UI.Log(string.Format("MAC Adress: '{0}'", _mac));
-      _cmdIn = string.Format("{0}/{1}/commandIn", _board, _mac);
-      _cmdOut = new string[] { string.Format("{0}/{1}/commandOut", _board, _mac) };
       _cmdQos = new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE }; // | MqttMsgBase.QOS_LEVEL_GRANTED_FAILURE 
 
       try {

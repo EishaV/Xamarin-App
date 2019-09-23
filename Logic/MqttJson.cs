@@ -50,7 +50,7 @@ namespace MqttJson{
     CHARGING = 1,
     ERROR_CHARGING = 2
   }
-  public enum Command : int {
+  public enum MowCommand : int {
     NONE = 0,
     START = 1,
     STOP = 2,
@@ -97,7 +97,7 @@ namespace MqttJson{
     [DataMember(Name = "tm")]   public string Time;
     [DataMember(Name = "dt")]   public string Date;
     [DataMember(Name = "sc")]   public Schedule Schedule;
-    [DataMember(Name = "cmd")]  public Command Cmd;
+    [DataMember(Name = "cmd")]  public MowCommand Cmd;
     [DataMember(Name = "mz")]   public int[] MultiZones; // [0-3] start point in meters
     [DataMember(Name = "mzv")]  public int[] MultiZonePercs; // [0-9] ring list of start indizes
     [DataMember(Name = "rd")]   public int RainDelay;
@@ -105,8 +105,8 @@ namespace MqttJson{
   }
 
   [DataContract] public struct Battery {
-    [DataMember(Name = "t")]    public float Temp;
-    [DataMember(Name = "v")]    public float Volt;
+    [DataMember(Name = "t")] public float Temp { get; set; }
+    [DataMember(Name = "v")]    public float Volt { get; set; }
     [DataMember(Name = "p")]    public float Perc;
     [DataMember(Name = "nr")]   public int Cycle;
     [DataMember(Name = "c")]    public ChargeCoge Charging;

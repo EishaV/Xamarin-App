@@ -41,15 +41,20 @@ namespace Logic {
     public string Pkcs12;
   }
   [DataContract]
+  public struct LsMqttTopic {
+    [DataMember(Name = "command_in")]
+    public string CmdIn;
+    [DataMember(Name = "command_out")]
+    public string CmdOut;
+  }
+  [DataContract]
   public struct LsProductItem {
-    [DataMember(Name = "serial_number")]
-    public string SerialNo;
-    [DataMember(Name = "mac_address")]
-    public string MacAdr;
     [DataMember(Name = "name")]
     public string Name;
-    [DataMember(Name = "firmware_auto_upgrade")]
-    public bool AutoUpgd;
+    [DataMember(Name = "serial_number")]
+    public string SerialNo;
+    [DataMember(Name = "mqtt_topics")]
+    public LsMqttTopic Topic;
   }
 
   [DataContract]
