@@ -120,7 +120,7 @@ namespace MqttJson{
 
   [DataContract] public struct Data {
     [DataMember(Name = "mac")]  public string MacAdr;
-    [DataMember(Name = "fw")]   public double Firmware;
+    [DataMember(Name = "fw")]   public string Firmware;
     [DataMember(Name = "bt")]   public Battery Battery;
     [DataMember(Name = "dmp")]  public float[] Orient; // 0-pitch, 1-roll, 2-yaw
     [DataMember(Name = "st")]   public Statistic Statistic;

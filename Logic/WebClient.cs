@@ -111,9 +111,9 @@ namespace Logic {
     private string _webapi, _token;
     private System.Net.WebClient _client = new System.Net.WebClient();
 
-    public LsMqtt Data;
-
     public List<LsProductItem> Products = new List<LsProductItem>();
+    public List<LsMqtt> States = new List<LsMqtt>();
+
     public string Broker { get; private set; }
     public X509Certificate2 Cert { get; private set; }
 
@@ -178,9 +178,24 @@ namespace Logic {
         str = string.Empty;
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(List<LsProductItem>));
-          Products = (List<LsProductItem>)dcjs.ReadObject(ms);
 
+          Products = (List<LsProductItem>)dcjs.ReadObject(ms);
           ms.Close();
+        }
+        #endregion
+
+        #region Status
+        foreach( LsProductItem pi in Products ) {
+          buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
+          str = Encoding.UTF8.GetString(buf);
+          Debug.WriteLine("Status {0}: {1}", pi.Name, str);
+          UI.Log(string.Format("Status {0}: {1}", pi.Name, str), 1);
+          using( MemoryStream ms = new MemoryStream(buf) ) {
+            DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
+
+            States.Add((LsMqtt)dcjs.ReadObject(ms));
+            ms.Close();
+          }
         }
         #endregion
 

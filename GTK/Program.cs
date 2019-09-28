@@ -16,7 +16,8 @@ namespace GameOfLife.GTK
       var app = new App();
       var window = new FormsWindow();
       window.LoadApplication(app);
-      window.SetApplicationTitle("Game of Life");
+      window.SetApplicationTitle("Landroid App");
+      window.Resize(400, 450);
       window.Show();
 
       Gtk.Application.Run();

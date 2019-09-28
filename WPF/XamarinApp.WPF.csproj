@@ -124,16 +124,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\landroid_icon_big.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bt_background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="Landroid.png" />
-    <Content Include="Logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="..\Images\Accu_Back.png">
+      <Link>Accu_Back.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Mower.png">
+      <Link>Mower.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Orient_Pitch.png">
+      <Link>Orient_Pitch.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Orient_Roll.png">
+      <Link>Orient_Roll.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Orient_Yaw.png">
+      <Link>Orient_Yaw.png</Link>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

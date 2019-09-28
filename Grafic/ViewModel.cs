@@ -39,6 +39,14 @@ namespace XamarinApp {
     public int Rrsi { get; set; }
 
     public Battery Accu { get; set; }
+
+    public float Pitch { get; set; }
+    public float Roll { get; set; }
+    public float Yaw { get; set; }
+
+    public TimeSpan WorkTime { get; set; }
+    public TimeSpan BladeTime { get; set; }
+    public int Distance { get; set; }
   }
 
   public class ViewModel : BaseView {
@@ -90,9 +98,9 @@ namespace XamarinApp {
       Mower = new Mower() {
         Error = "io",
         State = "daheim",
-        Rrsi = -70,
-        Firmware = "3.51",
-        Accu = new Battery { Temp = 25, Volt = 20.5F }
+        Rrsi = -00,
+        Firmware = "0.12",
+        Accu = new Battery { Temp = 38, Volt = 50.2F }
       };
 
       TraceItems.Add(new TraceItem("Test", "irgenwas sollte da stehen"));
@@ -141,8 +149,15 @@ namespace XamarinApp {
       //Invoke(new MqttDelegate(RecvInvoke));
       Mower.State = mqtt.Dat.LastState.ToString();
       Mower.Error = mqtt.Dat.LastError.ToString();
-      OnPropertyChanged(nameof(Mower));
+      Mower.Rrsi = mqtt.Dat.RecvSignal;
+      Mower.Firmware = mqtt.Dat.Firmware;
       Mower.Accu = mqtt.Dat.Battery;
+      Mower.Pitch = mqtt.Dat.Orient[0];
+      Mower.Roll = mqtt.Dat.Orient[1];
+      Mower.Yaw = mqtt.Dat.Orient[2];
+      Mower.WorkTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.WorkTime);
+      Mower.BladeTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.Blade);
+      Mower.Distance = mqtt.Dat.Statistic.Distance;
       OnPropertyChanged(nameof(Mower));
     }
 
@@ -155,7 +170,10 @@ namespace XamarinApp {
       if( _wc.Login(Email, Pass, Uuid) ) {
         Log($"Broker {_wc.Broker}");
 
-        if( _wc.Broker != null && _wc.Cert != null && _wc.Products != null && _wc.Products.Count > 0 ) {
+        if( true && _wc.States.Count > 0 ) {
+          Recv(_wc.States[0]);
+        }
+        if( false && _wc.Broker != null && _wc.Cert != null && _wc.Products != null && _wc.Products.Count > 0 ) {
           LsProductItem pi = _wc.Products[0];
 
           _ac = new AwsClient(_wc.Broker, Uuid, _wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);

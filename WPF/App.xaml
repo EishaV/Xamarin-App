@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:XamarinApp.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+    <ResourceDictionary>
+      <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15"/>
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>

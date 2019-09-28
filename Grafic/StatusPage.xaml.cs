@@ -14,5 +14,17 @@ namespace XamarinApp {
       InitializeComponent();
       BindingContext = ViewModel.Instance;
     }
+
+    protected override void OnSizeAllocated(double width, double height) {
+      base.OnSizeAllocated(width, height);
+
+      if( width > height ) {
+        StackFormat.Orientation = StackOrientation.Horizontal;
+        RestLayout.Orientation = StackOrientation.Vertical;
+      } else {
+        StackFormat.Orientation = StackOrientation.Vertical;
+        RestLayout.Orientation = StackOrientation.Horizontal;
+      }
+    }
   }
 }

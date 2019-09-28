@@ -1,46 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xamarinapp="clr-namespace:XamarinApp"
              x:Class="XamarinApp.StatusPage"
              Title="Status">
   <ContentPage.Content>
-    <StackLayout Padding="10" BackgroundColor="Gray">
-      <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-        <Label Text="{Binding Mower.State, FallbackValue=State}" HorizontalTextAlignment="End"/>
-        <Label Text="{Binding Mower.Error, FallbackValue=Error}" HorizontalTextAlignment="Start"/>
+    <StackLayout Padding="10" BackgroundColor="Gray" VerticalOptions="Fill">
+      <StackLayout x:Name="StackFormat" Orientation="Vertical" BackgroundColor="Accent" HorizontalOptions="Fill">
+
+        <StackLayout BackgroundColor="Red" HorizontalOptions="Start" WidthRequest="400" >
+          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" BackgroundColor="Bisque">
+            <Label Text="{Binding Mower.State, FallbackValue=State}" HorizontalTextAlignment="End"/>
+            <Label Text="{Binding Mower.Error, FallbackValue=Error}" HorizontalTextAlignment="Start"/>
+          </StackLayout>
+          
+          <Grid HorizontalOptions="CenterAndExpand" BackgroundColor="Gray">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Source="Mower.png"
+                Grid.Row="0" Grid.Column="0"                 
+                Aspect="AspectFit" Margin="20"
+                />
+            <Label Grid.Row="0" Grid.Column="1" Text="RSI" />
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Mower.Rrsi}" />
+          </Grid>
+          
+          <Grid HorizontalOptions="CenterAndExpand" BackgroundColor="Black">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0" Grid.ColumnSpan="5" Source="Accu_Back.png" Aspect="Fill" />
+            <Label Grid.Column="1" Text="Akkumulator: " VerticalOptions="Center" />
+            <Label Grid.Column="2" Text='{Binding Mower.Accu.Volt, StringFormat="{0}V"}' VerticalOptions="Center" />
+            <Label Grid.Column="3" Text="{Binding Mower.Accu.Temp, StringFormat='{0}°'}" VerticalOptions="Center" />
+          </Grid>
+
+          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" BackgroundColor="Blue">
+            <StackLayout HorizontalOptions="CenterAndExpand">
+              <Image Grid.Column="0" Grid.Row="0" Source="Orient_Pitch.png" Aspect="AspectFit" HeightRequest="40" HorizontalOptions="Center"/>
+              <Label Grid.Column="0" Grid.Row="1" Text='{Binding Mower.Pitch, StringFormat="Steigung: {0}°"}' HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+            <StackLayout HorizontalOptions="CenterAndExpand">
+              <Image Grid.Column="1" Grid.Row="0" Source="Orient_Roll.png" Aspect="AspectFit" HeightRequest="40" HorizontalOptions="Center"/>
+              <Label Grid.Column="1" Grid.Row="1" Text='{Binding Mower.Roll, StringFormat="Neigung: {0}°"}' HorizontalOptions="Center"/>
+            </StackLayout>
+            <StackLayout HorizontalOptions="CenterAndExpand">
+              <Image Grid.Column="2" Grid.Row="0" Source="Orient_Yaw.png" Aspect="AspectFit" HeightRequest="40" HorizontalOptions="Center"/>
+              <Label Grid.Column="2" Grid.Row="1" Text='{Binding Mower.Yaw, StringFormat="Richtung: {0}°"}' HorizontalOptions="Center"/>
+            </StackLayout>
+          </StackLayout>
+
+        </StackLayout>
+
+        <StackLayout x:Name="RestLayout" VerticalOptions="CenterAndExpand">
+          <Grid>
+            <Label Grid.Row="0" Grid.Column="0" Text="Mähzeit:"/>
+            <Label Grid.Row="0" Grid.Column="1" Text='{Binding Mower.BladeTime, StringFormat="{0}"}'/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Laufzeit:"/>
+            <Label Grid.Row="1" Grid.Column="1" Text='{Binding Mower.WorkTime, StringFormat="{0}"}'/>
+            <Label Grid.Row="2" Grid.Column="0" Text="Distanz:"/>
+            <Label Grid.Row="2" Grid.Column="1" Text='{Binding Mower.Distance, StringFormat="{0:n0}m"}'/>
+          </Grid>
+          <Grid>
+            <Label Grid.Row="0" Grid.Column="0" Text="Firmware:"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Mower.Firmware, StringFormat='{0}'}" Margin="5,0,5,0"/>
+          </Grid>
+        </StackLayout>
+        
       </StackLayout>
-      <Grid >
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Image Source="Landroid.png"
-              Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"                 
-              Aspect="AspectFit" Margin="20"
-              />
-        <Label Grid.Row="0" Grid.Column="1" Text="RSI" />
-        <Label Grid.Row="0" Grid.Column="2" Text="{Binding Mower.Rrsi}" HorizontalOptions="End" />
-        <Label Grid.Row="2" Grid.Column="1" Text="FW"/>
-        <Label  Grid.Row="2" Grid.Column="2" Text="{Binding Mower.Firmware}" HorizontalOptions="End"/>
-      </Grid>
-      <Grid >
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.ColumnSpan="5" Source="bt_background.png" Aspect="Fill" />
-        <Label Grid.Column="1" Text="Akkumulator: " FontSize="Medium" />
-        <Label Grid.Column="2" Text="{Binding Mower.Accu.Volt, StringFormat='{0}V'}" FontSize="Medium" />
-        <Label Grid.Column="3" Text="{Binding Mower.Accu.Temp, StringFormat='{0}°'}" FontSize="Medium" />
-      </Grid>
-      <StackLayout Orientation="Horizontal">
+
+      <StackLayout Orientation="Horizontal" BackgroundColor="DimGray">
         <Button Command="{Binding PollCommand}" Text="Poll" />
       </StackLayout>
     </StackLayout>

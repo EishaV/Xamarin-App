@@ -1,0 +1,13 @@
+mono installieren laut: https://www.mono-project.com/download/stable/#download-lin
+
+sudo apt-get install gtk-sharp2-examples gtk-sharp3-examples
+
+Try setting the CopyLocal property to false on GTK assemblies in your application. I mean the references to
+atk-sharp.dll
+gdk-sharp.dll
+glade-sharp.dll
+glib-sharp.dll
+gtk-dotnet.dll
+gtk-sharp.dll
+
+MONO_LOG_LEVEL=debug mono ...
