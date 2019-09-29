@@ -140,6 +140,40 @@
       <Link>Orient_Yaw.png</Link>
     </Resource>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\Images\Work_Back.png">
+      <Link>Work_Back.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\Images\Wifi_Blue.png">
+      <Link>Wifi_Blue.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Wifi_Green.png">
+      <Link>Wifi_Green.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Wifi_Red.png">
+      <Link>Wifi_Red.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Wifi_Yellow.png">
+      <Link>Wifi_Yellow.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\Images\Wifi_Gray.png">
+      <Link>Wifi_Gray.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\Images\Weather_01.png">
+      <Link>Weather_01.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\Images\Icon_Poll.png">
+      <Link>Icon_Poll.png</Link>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

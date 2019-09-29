@@ -33,6 +33,7 @@ namespace XamarinApp {
   }
 
   public class Mower {
+    public String Name { get; set; }
     public String State { get; set; }
     public String Error { get; set; }
     public String Firmware { get; set; }
@@ -40,6 +41,8 @@ namespace XamarinApp {
 
     public Battery Accu { get; set; }
 
+    public string Start { get; set; }
+    public string Duration { get; set; }
     public float Pitch { get; set; }
     public float Roll { get; set; }
     public float Yaw { get; set; }
@@ -96,11 +99,13 @@ namespace XamarinApp {
 
       //Mowers = new List<Mower>();
       Mower = new Mower() {
-        Error = "io",
+        Name = "Miss Land",
+        Error = "",
         State = "daheim",
         Rrsi = -00,
         Firmware = "0.12",
-        Accu = new Battery { Temp = 38, Volt = 50.2F }
+        Accu = new Battery { Temp = 38, Volt = 50.2F },
+        Start = "15:00", Duration = "240"
       };
 
       TraceItems.Add(new TraceItem("Test", "irgenwas sollte da stehen"));

@@ -18,12 +18,14 @@ namespace XamarinApp {
     protected override void OnSizeAllocated(double width, double height) {
       base.OnSizeAllocated(width, height);
 
-      if( width > height ) {
+      if( width > 1.2 * height ) {
         StackFormat.Orientation = StackOrientation.Horizontal;
-        RestLayout.Orientation = StackOrientation.Vertical;
+        StackOrient.Orientation = StackOrientation.Vertical;
+        StackStat.Orientation = StackOrientation.Vertical;
       } else {
         StackFormat.Orientation = StackOrientation.Vertical;
-        RestLayout.Orientation = StackOrientation.Horizontal;
+        StackOrient.Orientation = StackOrientation.Horizontal;
+        StackStat.Orientation = StackOrientation.Horizontal;
       }
     }
   }
