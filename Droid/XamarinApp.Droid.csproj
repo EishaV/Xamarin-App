@@ -125,5 +125,25 @@
       <Link>Resources\drawable\Wifi_Gray.png</Link>
     </AndroidResource>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\Images\Button_Home.png">
+      <Link>Resources\drawable\Button_Home.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\Images\Button_Pause.png">
+      <Link>Resources\drawable\Button_Pause.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\Images\Button_Play.png">
+      <Link>Resources\drawable\Button_Play.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\Images\Button_Poll.png">
+      <Link>Resources\drawable\Button_Poll.png</Link>
+    </AndroidResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

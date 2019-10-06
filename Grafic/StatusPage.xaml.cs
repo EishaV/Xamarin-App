@@ -12,6 +12,7 @@ namespace XamarinApp {
   public partial class StatusPage : ContentPage {
     public StatusPage() {
       InitializeComponent();
+
       BindingContext = ViewModel.Instance;
     }
 
@@ -21,10 +22,12 @@ namespace XamarinApp {
       if( width > 1.2 * height ) {
         StackFormat.Orientation = StackOrientation.Horizontal;
         StackOrient.Orientation = StackOrientation.Vertical;
+        StackPitch.Orientation = StackRoll.Orientation = StackYaw.Orientation = StackOrientation.Horizontal;
         StackStat.Orientation = StackOrientation.Vertical;
       } else {
         StackFormat.Orientation = StackOrientation.Vertical;
         StackOrient.Orientation = StackOrientation.Horizontal;
+        StackPitch.Orientation = StackRoll.Orientation = StackYaw.Orientation = StackOrientation.Vertical;
         StackStat.Orientation = StackOrientation.Horizontal;
       }
     }

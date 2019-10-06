@@ -170,8 +170,17 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\Images\Icon_Poll.png">
-      <Link>Icon_Poll.png</Link>
+    <Resource Include="..\Images\Button_Home.png">
+      <Link>Button_Home.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Button_Pause.png">
+      <Link>Button_Pause.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Button_Play.png">
+      <Link>Button_Play.png</Link>
+    </Resource>
+    <Resource Include="..\Images\Button_Poll.png">
+      <Link>Button_Poll.png</Link>
     </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
