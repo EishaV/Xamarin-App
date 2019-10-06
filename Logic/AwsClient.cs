@@ -98,8 +98,10 @@ namespace Logic {
     public bool Connected { get { return _mqtt != null && _mqtt.IsConnected; } }
     public bool Polling { get { return _msgPoll && _mqtt != null && _mqtt.IsConnected; } }
     public void Poll() {
-      _msgId = _mqtt.Publish(_cmdIn, Encoding.UTF8.GetBytes("{}"));
-      _msgPoll = true;
+      if( Connected ) {
+        _msgId = _mqtt.Publish(_cmdIn, Encoding.UTF8.GetBytes("{}"));
+        _msgPoll = true;
+      }
     }
     public void Publish(string s) {
       _msgId = _mqtt.Publish(_cmdIn, Encoding.UTF8.GetBytes(s));
@@ -113,7 +115,7 @@ namespace Logic {
     private void MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
       string Json = Encoding.UTF8.GetString(e.Message);
 
-      Debug.WriteLine(Json);
+      Debug.WriteLine(Json, "Aws.Recv");
       try {
         MemoryStream ms = new MemoryStream(e.Message);
         DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
