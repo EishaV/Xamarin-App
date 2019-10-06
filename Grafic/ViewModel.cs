@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -50,6 +51,8 @@ namespace XamarinApp {
     public TimeSpan WorkTime { get; set; }
     public TimeSpan BladeTime { get; set; }
     public int Distance { get; set; }
+
+    public DateTime Stamp { get; set; }
   }
 
   public class ViewModel : BaseView {
@@ -72,9 +75,6 @@ namespace XamarinApp {
       set { _pass = value; OnPropertyChanged(nameof(Pass)); }
     }
 
-    WebClient _wc = null;
-    AwsClient _ac = null;
-
     public List<Mower> Mowers { get; private set; }
     public Mower Mower { get; private set; }
     public class TraceItem {
@@ -95,7 +95,9 @@ namespace XamarinApp {
     string CfgFile;
 
     public ViewModel() {
-      PollCommand = new Command(() => _ac.Poll() );
+      PollCommand = new Command(() => App.Instance.Aws?.Poll() );
+
+      App.Instance.Recv += Recv;
 
       //Mowers = new List<Mower>();
       Mower = new Mower() {
@@ -150,39 +152,27 @@ namespace XamarinApp {
       App.Current.MainPage.DisplayAlert("Error", s, "OK");
     }
 
-    private void Recv(LsMqtt mqtt) {
-      //Invoke(new MqttDelegate(RecvInvoke));
-      Mower.State = mqtt.Dat.LastState.ToString();
-      Mower.Error = mqtt.Dat.LastError.ToString();
-      Mower.Rrsi = mqtt.Dat.RecvSignal;
-      Mower.Firmware = mqtt.Dat.Firmware;
-      Mower.Accu = mqtt.Dat.Battery;
-      Mower.Pitch = mqtt.Dat.Orient[0];
-      Mower.Roll = mqtt.Dat.Orient[1];
-      Mower.Yaw = mqtt.Dat.Orient[2];
-      Mower.WorkTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.WorkTime);
-      Mower.BladeTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.Blade);
-      Mower.Distance = mqtt.Dat.Statistic.Distance;
-      OnPropertyChanged(nameof(Mower));
-    }
-
     public void Login() {
-      _wc = new WebClient("https://api.worxlandroid.com/api/v2/", "nCH3A0WvMYn66vGorjSrnGZ2YtjQWDiCvjg7jNxK");
+      WebClient wc = new WebClient("https://api.worxlandroid.com/api/v2/", "nCH3A0WvMYn66vGorjSrnGZ2YtjQWDiCvjg7jNxK");
       UI.SetLog(Log);
       UI.SetErr(Err);
-      UI.SetRecv(Recv);
 
-      if( _wc.Login(Email, Pass, Uuid) ) {
-        Log($"Broker {_wc.Broker}");
+      if( wc.Login(Email, Pass, Uuid) ) {
+        Log($"Broker {wc.Broker}");
 
-        if( true && _wc.States.Count > 0 ) {
-          Recv(_wc.States[0]);
+        if( true && wc.States.Count > 0 ) {
+          Recv(this, new MyEventArgs(wc.States[0]));
         }
-        if( false && _wc.Broker != null && _wc.Cert != null && _wc.Products != null && _wc.Products.Count > 0 ) {
-          LsProductItem pi = _wc.Products[0];
+        if( wc.Broker != null && wc.Cert != null && wc.Products != null && wc.Products.Count > 0 ) {
+          LsProductItem pi = wc.Products[0];
+          AwsClient ac = new AwsClient(wc.Broker, Uuid, wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
 
-          _ac = new AwsClient(_wc.Broker, Uuid, _wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
-          _ac.Start(true);
+          if( ac.Start(true) && Application.Current is App ) {
+            App app = Application.Current as App;
+
+            App.Web = wc;
+            app.Aws = ac;
+          }
         }
       }
 
@@ -199,8 +189,30 @@ namespace XamarinApp {
       fs.Close();
     }
 
+    private void Recv(object sender, MyEventArgs e) {
+      LsMqtt mqtt = e.Mqtt;
+      string dts = string.Format("{0} {1}", mqtt.Cfg.Date, mqtt.Cfg.Time);
+
+      //Invoke(new MqttDelegate(RecvInvoke));
+      Mower.State = mqtt.Dat.LastState.ToString();
+      Mower.Error = mqtt.Dat.LastError.ToString();
+      Mower.Rrsi = mqtt.Dat.RecvSignal;
+      Mower.Firmware = mqtt.Dat.Firmware;
+      Mower.Accu = mqtt.Dat.Battery;
+      Mower.Pitch = mqtt.Dat.Orient[0];
+      Mower.Roll = mqtt.Dat.Orient[1];
+      Mower.Yaw = mqtt.Dat.Orient[2];
+      Mower.WorkTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.WorkTime);
+      Mower.BladeTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.Blade);
+      Mower.Distance = mqtt.Dat.Statistic.Distance;
+      Mower.Stamp = DateTime.ParseExact(dts, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+      OnPropertyChanged(nameof(Mower));
+    }
+
     public void Logout() {
-      if( _ac != null && _ac.Connected ) _ac.Exit();
+      AwsClient ac = (Application.Current as App)?.Aws;
+
+      if( ac != null && ac.Connected ) ac.Exit();
     }
   }
 }

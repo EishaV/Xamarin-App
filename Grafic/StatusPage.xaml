@@ -103,7 +103,7 @@
         <StackLayout VerticalOptions="FillAndExpand" Spacing="5" BackgroundColor="DarkBlue">
           <StackLayout x:Name="StackOrient" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="DimGray">
             <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-              <Image Source="Orient_Pitch.png" Aspect="AspectFit" WidthRequest="{}"/>
+              <Image Source="Orient_Pitch.png" Aspect="AspectFit"/>
               <Label Text='{Binding Mower.Pitch, StringFormat="Steigung: {0}°"}' HorizontalOptions="CenterAndExpand"/>
             </StackLayout>
             <StackLayout x:Name="StackRoll" Orientation="Vertical" HorizontalOptions="CenterAndExpand">

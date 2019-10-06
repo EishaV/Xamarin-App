@@ -1,11 +1,39 @@
 ﻿using Xamarin.Forms;
 
+using Logic;
+using System;
+
 namespace XamarinApp
 {
 	public class App : Application
 	{
-		public App ()
-		{
+    WebClient _wc = null;
+    AwsClient _ac = null;
+
+    public event EventHandler<MyEventArgs> Recv;
+
+    public static App Instance {
+      get { return Application.Current as App; }
+    }
+
+    public static WebClient Web {
+      get { return Instance?._wc; }
+      set { if( Instance != null ) Instance._wc = value; }
+    }
+
+    public AwsClient Aws {
+      get { return _ac; }
+      set {
+          _ac = value;
+          _ac.Recv += OnRecv;
+        }
+      }
+
+    private void OnRecv(object sender, MyEventArgs e) {
+      Recv?.Invoke(sender, e);
+    }
+
+    public App ()	{
 			MainPage = new XamarinApp.MainPage ();
       //ViewModel vm = ViewModel.Instance;
 		}

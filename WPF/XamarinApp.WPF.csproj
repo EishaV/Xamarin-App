@@ -179,6 +179,8 @@
     <Resource Include="..\Images\Button_Play.png">
       <Link>Button_Play.png</Link>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="..\Images\Button_Poll.png">
       <Link>Button_Poll.png</Link>
     </Resource>

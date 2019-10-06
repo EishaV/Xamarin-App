@@ -13,6 +13,14 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 using BackEnd;
 
 namespace Logic {
+  public class MyEventArgs : EventArgs {
+    public LsMqtt Mqtt { get; private set; }
+
+    public MyEventArgs(LsMqtt mqtt) {
+      Mqtt = mqtt;
+    }
+  }
+
   public class AwsClient {
     private MqttClient _mqtt = null;
 
@@ -23,6 +31,8 @@ namespace Logic {
     private byte[] _cmdQos;
     private ushort _msgId = 0;
     private bool _msgPoll = false;
+
+    public event EventHandler<MyEventArgs> Recv;
 
     public AwsClient(string broker, string uuid, X509Certificate2 cert, string cmdIn, string cmdOut) {
       _broker = broker; _uuid = "android-" + uuid; _cert = cert;
@@ -108,10 +118,11 @@ namespace Logic {
         MemoryStream ms = new MemoryStream(e.Message);
         DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
         LsMqtt jm = (LsMqtt)dcjs.ReadObject(ms);
+        EventHandler<MyEventArgs> recv = Recv;
 
         _msgPoll = false;
         ms.Close();
-        UI.Recv(jm);
+        recv(this, new MyEventArgs(jm));
       } catch(Exception ex) {
         string s;
 

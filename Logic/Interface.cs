@@ -17,8 +17,5 @@ namespace Logic {
     public static void SetErr(ErrDelegate value) { err = value; }
     public static void Err(string text) { err?.Invoke(text); }
 
-    private static MqttDelegate recv = null;
-    public static void SetRecv(MqttDelegate value) { recv = value; }
-    public static void Recv(LsMqtt data) { recv?.Invoke(data); }
   }
 }
