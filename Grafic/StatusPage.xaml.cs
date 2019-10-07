@@ -19,14 +19,18 @@ namespace XamarinApp {
     protected override void OnSizeAllocated(double width, double height) {
       base.OnSizeAllocated(width, height);
 
-      if( width > 1.2 * height ) {
-        StackFormat.Orientation = StackOrientation.Horizontal;
+      if( width > 1.1 * height ) {
+        FlexMain.Direction = FlexDirection.Row;
         StackOrient.Orientation = StackOrientation.Vertical;
         StackPitch.Orientation = StackRoll.Orientation = StackYaw.Orientation = StackOrientation.Horizontal;
+        ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = -1;
+        ImgPitch.HeightRequest = ImgRoll.HeightRequest = ImgYaw.HeightRequest = height / 6;
         StackStat.Orientation = StackOrientation.Vertical;
       } else {
-        StackFormat.Orientation = StackOrientation.Vertical;
+        FlexMain.Direction = FlexDirection.Column;
         StackOrient.Orientation = StackOrientation.Horizontal;
+        ImgPitch.HeightRequest = ImgRoll.HeightRequest = ImgYaw.HeightRequest = -1;
+        ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = width / 3.5;
         StackPitch.Orientation = StackRoll.Orientation = StackYaw.Orientation = StackOrientation.Vertical;
         StackStat.Orientation = StackOrientation.Horizontal;
       }

@@ -85,7 +85,7 @@ namespace XamarinApp {
       public TraceItem(string name, string text) { Name = name; Text = text; }
     }
 
-    private ObservableCollection<TraceItem> _TraceItems = new ObservableCollection<TraceItem>();
+    private readonly ObservableCollection<TraceItem> _TraceItems = new ObservableCollection<TraceItem>();
 
     public ObservableCollection<TraceItem> TraceItems { get { return _TraceItems; } }
 
@@ -95,7 +95,7 @@ namespace XamarinApp {
     string CfgFile;
 
     public ViewModel() {
-      PollCommand = new Command(() => App.Instance.Aws?.Poll() );
+      PollCommand = new Command(() => App.Instance.Aws?.Poll());
 
       App.Instance.Recv += Recv;
 
