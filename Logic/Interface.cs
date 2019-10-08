@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Logic {
-  public delegate void ErrDelegate(string msg);
-  public delegate void LogDelegate(string log, int c = 0);
+  public delegate void ErrorDelegate(string msg);
+  public delegate void TraceDelegate(string cat, string txt);
   public delegate void MqttDelegate(LsMqtt mj);
 
   public class UI {
-    private static LogDelegate log = null;
-    public static void SetLog(LogDelegate value) { log = value; }
-    public static void Log(string text) { log?.Invoke(text); }
-    public static void Log(string text, int c) { log?.Invoke(text, c); }
+    private static TraceDelegate log = null;
+    public static void SetLog(TraceDelegate value) { log = value; }
+    public static void Trace(string cat) { log?.Invoke(cat, null); }
+    public static void Trace(string cat, string txt) { log?.Invoke(cat, txt); }
 
-    private static ErrDelegate err = null;
-    public static void SetErr(ErrDelegate value) { err = value; }
+    private static ErrorDelegate err = null;
+    public static void SetErr(ErrorDelegate value) { err = value; }
     public static void Err(string text) { err?.Invoke(text); }
 
   }

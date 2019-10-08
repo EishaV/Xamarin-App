@@ -11,13 +11,13 @@ namespace XamarinApp {
 
     public UserPage() {
       InitializeComponent();
-      BindingContext = ViewModel.Instance;
+      BindingContext = new UserModel();
     }
 
     void OnLoginClicked(object sender, EventArgs args) {
       //TraceView.GetInstance().Log($"Email {email.Text}");
 
-      ViewModel.Instance.Login();
+      (BindingContext as UserModel).Login();
     }
   }
 }

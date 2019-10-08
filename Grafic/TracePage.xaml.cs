@@ -10,12 +10,12 @@ namespace XamarinApp {
     public TracePage() {
       InitializeComponent();
 
-      BindingContext = ViewModel.Instance;
+      BindingContext = App.Instance.TraceItems;
       //MessagingCenter.Subscribe<Application, TraceItem>(this, "Trace", TraceEvent);
     }
 
     private void trace_ItemSelected(object sender, SelectedItemChangedEventArgs e) {
-      text.Text = (e.SelectedItem as ViewModel.TraceItem).Text;
+      text.Text = (e.SelectedItem as TraceItem).Text;
     }
   }
 

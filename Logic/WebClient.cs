@@ -138,19 +138,19 @@ namespace Logic {
         buf = _client.UploadValues(_webapi + "oauth/token", nvc);
         str = Encoding.UTF8.GetString(buf);
         Debug.Print("Oauth token: {0}", str);
-        UI.Log(string.Format("Oauth token: {0}", str), 1);
+        UI.Trace("Oauth token", str);
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsOAuth));
 
           lsoa = (LsOAuth)dcjs.ReadObject(ms);
-          UI.Log(string.Format("Access token: {0}", lsoa.Token));
+          UI.Trace("Access token", lsoa.Token);
           _client.Headers["Authorization"] = string.Format("{0} {1}", lsoa.Type, lsoa.Token);
-          UI.Log(string.Format("Token type: {0}", lsoa.Type));
+          UI.Trace("Token type", lsoa.Type);
           ms.Close();
         }
       } catch( Exception ex ) {
         UI.Err(ex.Message);
-        UI.Log(ex.ToString(), 9);
+        UI.Trace("Login 1", ex.ToString());
         return false;
       }
       #endregion
@@ -159,7 +159,7 @@ namespace Logic {
         #region Benutzer
         buf = _client.DownloadData(_webapi + "users/me");
         str = Encoding.UTF8.GetString(buf);
-        UI.Log(string.Format("User info: {0}", str), 1);
+        UI.Trace("User info", str);
         Debug.Print("User info: {0}", str);
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsUser));
@@ -173,7 +173,7 @@ namespace Logic {
         #region Product items
         buf = _client.DownloadData(_webapi + "product-items");
         str = Encoding.UTF8.GetString(buf);
-        UI.Log(string.Format("Product items: {0}", str), 1);
+        UI.Trace("Product items", str);
         Debug.Print("Product items: {0}", str);
         str = string.Empty;
         using( MemoryStream ms = new MemoryStream(buf) ) {
@@ -189,7 +189,7 @@ namespace Logic {
           buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
           str = Encoding.UTF8.GetString(buf);
           Debug.WriteLine("Status {0}: {1}", pi.Name, str);
-          UI.Log(string.Format("Status {0}: {1}", pi.Name, str), 1);
+          UI.Trace("Status " + pi.Name, str);
           using( MemoryStream ms = new MemoryStream(buf) ) {
             DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
 
@@ -202,7 +202,7 @@ namespace Logic {
         #region Certificate
         buf = _client.DownloadData(_webapi + "users/certificate");
         str = Encoding.UTF8.GetString(buf);
-        UI.Log(string.Format("AWS Certificate: {0}", str), 1);
+        UI.Trace("AWS Certificate", str);
         Debug.WriteLine("AWS Certificate: {0}", str);
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsCertificate));
@@ -217,7 +217,7 @@ namespace Logic {
         #endregion
       } catch( Exception ex ) {
         UI.Err(ex.Message);
-        UI.Log(ex.ToString(), 9);
+        UI.Trace("Login 2", ex.ToString());
         return false;
       }
 

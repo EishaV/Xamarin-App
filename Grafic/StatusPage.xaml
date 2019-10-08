@@ -58,7 +58,7 @@
 
         <AbsoluteLayout Grid.Row="2">
           <Image AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Source="Accu_Back.png" Aspect="Fill" />
-          <Label AbsoluteLayout.LayoutBounds=".5,.5,-1,-1" AbsoluteLayout.LayoutFlags="PositionProportional" VerticalOptions="Center" TextColor="Black">
+          <Label AbsoluteLayout.LayoutBounds=".5,.5,-1,-1" AbsoluteLayout.LayoutFlags="PositionProportional" TextColor="Black">
             <Label.FormattedText>
               <FormattedString>
                 <Span Text="Akkumulator:"/>
@@ -68,24 +68,6 @@
             </Label.FormattedText>
           </Label>
         </AbsoluteLayout>
-        <!--
-        <Grid Grid.Row="2">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-          </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <Image Grid.Column="0" Grid.ColumnSpan="5" Source="Accu_Back.png" Aspect="Fill" />
-          <Label Grid.Column="1" Text="Akkumulator: " VerticalOptions="Center" />
-          <Label Grid.Column="2" Text='{Binding Mower.Accu.Volt, StringFormat="{0}V"}' VerticalOptions="Center" />
-          <Label Grid.Column="3" Text="{Binding Mower.Accu.Temp, StringFormat='{0}°'}" VerticalOptions="Center" />
-        </Grid>
-        -->
 
         <Grid Grid.Row="3">
           <Grid.ColumnDefinitions>
@@ -106,39 +88,38 @@
         </Grid>
       </Grid>
 
-      <FlexLayout FlexLayout.Grow="2" Direction="Column" JustifyContent="SpaceBetween" AlignItems="Center" BackgroundColor="DarkViolet">
-
-        <StackLayout x:Name="StackOrient" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="5" BackgroundColor="DarkBlue">
-          <StackLayout x:Name="StackPitch" Orientation="Vertical" Padding="0">
-            <Image x:Name="ImgPitch" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center" WidthRequest="60"/>
+      <FlexLayout x:Name="FlexBack" FlexLayout.Grow="2" Direction="Column" JustifyContent="SpaceBetween" AlignItems="Stretch" BackgroundColor="DarkViolet">
+        <StackLayout x:Name="StackOrient" Orientation="Horizontal" Margin="10,0,10,0" Spacing="5" BackgroundColor="DarkBlue">
+          <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0">
+            <Image x:Name="ImgPitch" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center"/>
             <Label Text='{Binding Mower.Pitch, StringFormat="Steigung: {0}°"}' HorizontalOptions="Center"/>
           </StackLayout>
-          <StackLayout x:Name="StackRoll" Orientation="Vertical" Padding="0">
-            <Image x:Name="ImgRoll" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="Center" WidthRequest="60"/>
+          <StackLayout x:Name="StackRoll" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0">
+            <Image x:Name="ImgRoll" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="Center"/>
             <Label Text='{Binding Mower.Roll, StringFormat="Neigung: {0}°"}' HorizontalOptions="Center"/>
           </StackLayout>
-          <StackLayout x:Name="StackYaw" Orientation="Vertical" Padding="0">
-            <Image x:Name="ImgYaw" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="Center" WidthRequest="60"/>
+          <StackLayout x:Name="StackYaw" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0">
+            <Image x:Name="ImgYaw" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="Center"/>
             <Label Text='{Binding Mower.Yaw, StringFormat="Richtung: {0}°"}' HorizontalOptions="Center"/>
           </StackLayout>
         </StackLayout>
 
-        <StackLayout x:Name="StackStat" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="5" BackgroundColor="DarkGreen">
-          <StackLayout Orientation="Horizontal" Padding="0">
+        <StackLayout x:Name="StackStat" Orientation="Horizontal" Margin="10,0,10,0" Spacing="5" BackgroundColor="DarkGreen">
+          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Padding="0">
             <Label Text="T-Mäh:" HorizontalOptions="StartAndExpand"/>
             <Label Text='{Binding Mower.BladeTime, StringFormat="{0}", FallbackValue="0.00:00:00"}'/>
           </StackLayout>
-          <StackLayout Orientation="Horizontal" Padding="0">
+          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Padding="0">
             <Label Text="S-Ges:"  HorizontalOptions="StartAndExpand"/>
             <Label Text='{Binding Mower.Distance, StringFormat="{0:n0}m", FallbackValue=1000000}'/>
           </StackLayout>
-          <StackLayout Orientation="Horizontal" Padding="0">
+          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Padding="0">
             <Label Text="T-Ges:" HorizontalOptions="StartAndExpand"/>
             <Label Text='{Binding Mower.WorkTime, StringFormat="{0}", FallbackValue="0.00:00:00"}'/>
           </StackLayout>
-          </StackLayout>
+        </StackLayout>
 
-        <Label BackgroundColor="DarkKhaki" HorizontalOptions="CenterAndExpand">
+        <Label FlexLayout.AlignSelf="Center" BackgroundColor="DarkKhaki">
           <Label.Font>
             <OnPlatform x:TypeArguments="Font">
               <On Platform="Android" Value="Normal, Italic"/>
@@ -154,7 +135,7 @@
           </Label.FormattedText>
         </Label>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" BackgroundColor="DimGray">
+        <StackLayout FlexLayout.AlignSelf="Center" Orientation="Horizontal" BackgroundColor="DimGray">
           <ImageButton Command="{Binding PollCommand}" Source="Button_Home.png" BackgroundColor="Transparent" />
           <ImageButton Command="{Binding PollCommand}" Source="Button_Play.png" BackgroundColor="Transparent" />
           <ImageButton Command="{Binding PollCommand}" Source="Button_Pause.png" BackgroundColor="Transparent" />

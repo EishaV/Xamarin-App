@@ -4,7 +4,7 @@
 			       x:Class="XamarinApp.UserPage"
 			       Title="User">
 	<ContentPage.Content>
-    <StackLayout HorizontalOptions="StartAndExpand">
+    <StackLayout HorizontalOptions="Start">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="*" />
@@ -12,8 +12,8 @@
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*" />
-          <ColumnDefinition Width="2*" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Label Text="Uuid" Grid.Row="0" Grid.Column="0" />
         <Entry Text="{Binding Uuid}" IsEnabled="False" Grid.Row="0" Grid.Column="1" />

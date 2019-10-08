@@ -9,7 +9,7 @@
         <RowDefinition Height="7*" />
         <RowDefinition Height="3*" />
       </Grid.RowDefinitions>
-      <ListView x:Name="trace" ItemsSource="{Binding TraceItems}" SelectionMode="Single" ItemSelected="trace_ItemSelected" Grid.Row="0" >
+      <ListView x:Name="trace" ItemsSource="{Binding}" SelectionMode="Single" ItemSelected="trace_ItemSelected" Grid.Row="0" >
         <ListView.ItemTemplate>
           <DataTemplate>
             <TextCell Text="{Binding Name}"></TextCell>
