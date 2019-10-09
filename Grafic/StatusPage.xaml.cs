@@ -35,7 +35,7 @@ namespace XamarinApp {
           StackOrient.Orientation = StackOrientation.Horizontal;
           StackPitch.Orientation = StackRoll.Orientation = StackYaw.Orientation = StackOrientation.Vertical;
           // sonst fehlen bei WPF beim ersten Afruf die Bilder ...
-          ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = height / 9 * 200/150;
+          ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = 200/150 * height / 9.0;
           ImgPitch.HeightRequest = ImgRoll.HeightRequest = ImgYaw.HeightRequest = height / 9;
           StackStat.Orientation = StackOrientation.Horizontal;
         }

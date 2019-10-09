@@ -77,6 +77,7 @@ namespace XamarinApp {
         }
         fs.Close();
       } else {
+        Config = new JsonConfig();
         Config.Uuid = Guid.NewGuid().ToString();
       }
 
@@ -90,7 +91,7 @@ namespace XamarinApp {
     }
 
     protected override void OnSleep() {
-      Logout();
+      //Logout();
       // Handle when your app sleeps
     }
 
