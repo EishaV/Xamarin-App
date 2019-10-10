@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:XamarinApp; assembly=XamarinApp"
+             x:Class="XamarinApp.HistoryPage"
+             Title="Historie">
+  <ContentPage.BindingContext>
+    <viewModels:HistoryModel/>
+  </ContentPage.BindingContext>
+    <ContentPage.Content>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="7*" />
+        <RowDefinition Height="3*" />
+      </Grid.RowDefinitions>
+      <ListView Grid.Row="0"  ItemsSource="{Binding History}" SelectionMode="Single" SelectedItem="{Binding HistoryItem}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal">
+                <Label Text="{Binding Stamp}"/>
+                <Label Text="{Binding Mqtt.Dat.Error}"/>
+                <Label Text="{Binding Mqtt.Dat.State}"/>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+      <StackLayout Grid.Row="1" Orientation="Vertical">
+        <Label BindingContext="{Binding HistoryItem.Mqtt.Cfg}">
+          <Label.FormattedText>
+            <FormattedString>
+              <Span Text="{Binding Date, StringFormat='Date: {0}'}" />
+              <Span Text="{Binding Time, StringFormat='Time: {0}'}" />
+              <Span Text="{Binding MultiZones, StringFormat='Zone: {0}'}" />
+              <Span Text="{Binding MultiZonePercs, StringFormat=': {0}'}" />
+            </FormattedString> 
+          </Label.FormattedText>
+        </Label>
+        <Label BindingContext="{Binding HistoryItem}">
+          <Label.FormattedText>
+            <FormattedString>
+              <Span Text="Plan -> " />
+              <Span Text="{Binding Mqtt.Cfg.Schedule.Mode, StringFormat='Mode: {0}'}" />
+              <Span Text="{Binding Mqtt.Cfg.Schedule.Perc, StringFormat='Perc: {0}'}" />
+              <Span Text="{Binding Plan}" />
+            </FormattedString>
+          </Label.FormattedText>
+        </Label>
+      </StackLayout>
+    </Grid>
+  </ContentPage.Content>
+</ContentPage>

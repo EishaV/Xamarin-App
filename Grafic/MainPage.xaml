@@ -7,5 +7,6 @@
   <local:TodayPage />
 	<local:UserPage />
   <local:StatusPage />
+  <local:HistoryPage/>
   <local:TracePage />
 </TabbedPage>

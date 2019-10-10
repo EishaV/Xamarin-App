@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using MqttJson;
+
 namespace Logic {
   public delegate void ErrorDelegate(string msg);
   public delegate void TraceDelegate(string cat, string txt);
@@ -16,6 +18,5 @@ namespace Logic {
     private static ErrorDelegate err = null;
     public static void SetErr(ErrorDelegate value) { err = value; }
     public static void Err(string text) { err?.Invoke(text); }
-
   }
 }

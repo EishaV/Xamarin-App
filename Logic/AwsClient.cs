@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Json;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
+using MqttJson;
 using BackEnd;
 
 namespace Logic {

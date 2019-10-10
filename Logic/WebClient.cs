@@ -58,14 +58,6 @@ namespace Logic {
   }
 
   [DataContract]
-  public struct LsMqtt {
-    [DataMember(Name = "cfg")]
-    public Config Cfg;
-    [DataMember(Name = "dat")]
-    public Data Dat;
-  }
-
-  [DataContract]
   public struct LsJson {
     [DataMember(Name = "email")]    public string Email;
     [DataMember(Name = "pass")]     public string Password;

@@ -30,6 +30,8 @@ namespace XamarinApp {
 
     public ObservableCollection<TraceItem> TraceItems { get { return _TraceItems; } }
 
+    public ObservableCollection<HistoryItem> History { get; } = new ObservableCollection<HistoryItem>();
+
     public static App Instance {
       get { return Application.Current as App; }
     }
@@ -51,6 +53,7 @@ namespace XamarinApp {
 
     private void OnRecv(object sender, MyEventArgs e) {
       Recv?.Invoke(sender, e);
+      History.Add(new HistoryItem(DateTime.Now, e.Mqtt));
     }
 
     static public void Err(String s) {

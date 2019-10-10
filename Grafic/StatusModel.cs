@@ -61,8 +61,8 @@ namespace XamarinApp {
       string dts = string.Format("{0} {1}", mqtt.Cfg.Date, mqtt.Cfg.Time);
 
       //Invoke(new MqttDelegate(RecvInvoke));
-      Mower.State = mqtt.Dat.LastState.ToString();
-      Mower.Error = mqtt.Dat.LastError.ToString();
+      Mower.State = mqtt.Dat.State.ToString();
+      Mower.Error = mqtt.Dat.Error.ToString();
       Mower.Rrsi = mqtt.Dat.RecvSignal;
       Mower.Firmware = mqtt.Dat.Firmware;
       Mower.Accu = mqtt.Dat.Battery;

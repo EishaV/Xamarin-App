@@ -93,15 +93,15 @@ namespace MqttJson{
   }
 
   [DataContract] public struct Config {
-    [DataMember(Name = "lg")]   public string Language; // always it :-(
-    [DataMember(Name = "tm")]   public string Time;
-    [DataMember(Name = "dt")]   public string Date;
-    [DataMember(Name = "sc")]   public Schedule Schedule;
+    [DataMember(Name = "lg")]   public string Language { get; set; } // always it :-(
+    [DataMember(Name = "tm")]   public string Time { get; set; }
+    [DataMember(Name = "dt")]   public string Date { get; set; }
+    [DataMember(Name = "sc")]   public Schedule Schedule { get; set; }
     [DataMember(Name = "cmd")]  public MowCommand Cmd;
-    [DataMember(Name = "mz")]   public int[] MultiZones; // [0-3] start point in meters
-    [DataMember(Name = "mzv")]  public int[] MultiZonePercs; // [0-9] ring list of start indizes
-    [DataMember(Name = "rd")]   public int RainDelay;
-    [DataMember(Name = "sn")]   public string SerialNo;
+    [DataMember(Name = "mz")]   public int[] MultiZones { get; set; } // [0-3] start point in meters
+    [DataMember(Name = "mzv")]  public int[] MultiZonePercs { get; set; } // [0-9] ring list of start indizes
+    [DataMember(Name = "rd")]   public int RainDelay { get; set; }
+    [DataMember(Name = "sn")]   public string SerialNo { get; set; }
   }
 
   [DataContract] public struct Battery {
@@ -124,11 +124,19 @@ namespace MqttJson{
     [DataMember(Name = "bt")]   public Battery Battery;
     [DataMember(Name = "dmp")]  public float[] Orient; // 0-pitch, 1-roll, 2-yaw
     [DataMember(Name = "st")]   public Statistic Statistic;
-    [DataMember(Name = "ls")]   public StatusCode LastState;
-    [DataMember(Name = "le")]   public ErrorCode LastError;
+    [DataMember(Name = "ls")]   public StatusCode State { get; set; }
+    [DataMember(Name = "le")]   public ErrorCode Error { get; set; }
     [DataMember(Name = "lz")]   public int LastZone;
     [DataMember(Name = "rsi")]  public int RecvSignal;
     [DataMember(Name = "lk")]   public int Lock;
+  }
+
+  [DataContract]
+  public struct LsMqtt {
+    [DataMember(Name = "cfg")]
+    public Config Cfg { get; set; }
+    [DataMember(Name = "dat")]
+    public Data Dat { get; set; }
   }
   #endregion
 
