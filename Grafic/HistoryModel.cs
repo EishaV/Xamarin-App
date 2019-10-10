@@ -11,22 +11,23 @@ namespace XamarinApp {
 
     public LsMqtt Mqtt { get; private set; }
 
-    public string Plan {
-      get {
-        string[] wd = new string[] { "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" };
-        Schedule sc = Mqtt.Cfg.Schedule;
-        string s = string.Empty;
+    public string[] WeekDay { get; } = new string[] { "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" };
 
-        for( int i = 0; i < 7; i++ ) {
-          s += string.Format("{0} {1} {2}", wd[i], sc.Days[i][0], sc.Days[i][1]);
-        }
-        return s;
-      }
-    }
+    public string[] StartTime { get; private set; }
+    public string[] Duration { get; private set; }
 
     public HistoryItem(DateTime stamp, LsMqtt json) {
       Stamp = stamp;
       Mqtt = json;
+
+      Schedule sc = Mqtt.Cfg.Schedule;
+
+      StartTime = new string[7];
+      Duration  = new string[7];
+      for( int i = 0; i < 7; i++ ) {
+        StartTime[i] = sc.Days[i][0].ToString();
+        Duration[i] = sc.Days[i][1].ToString();
+      }
     }
   }
 

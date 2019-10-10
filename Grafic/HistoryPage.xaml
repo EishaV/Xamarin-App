@@ -31,22 +31,42 @@
           <Label.FormattedText>
             <FormattedString>
               <Span Text="{Binding Date, StringFormat='Date: {0}'}" />
-              <Span Text="{Binding Time, StringFormat='Time: {0}'}" />
-              <Span Text="{Binding MultiZones, StringFormat='Zone: {0}'}" />
-              <Span Text="{Binding MultiZonePercs, StringFormat=': {0}'}" />
+              <Span Text="{Binding Time, StringFormat=' Time: {0}'}" />
+              <Span Text="{Binding Schedule.Perc, StringFormat=' Corr: {0}'}"/>
             </FormattedString> 
           </Label.FormattedText>
         </Label>
-        <Label BindingContext="{Binding HistoryItem}">
-          <Label.FormattedText>
-            <FormattedString>
-              <Span Text="Plan -> " />
-              <Span Text="{Binding Mqtt.Cfg.Schedule.Mode, StringFormat='Mode: {0}'}" />
-              <Span Text="{Binding Mqtt.Cfg.Schedule.Perc, StringFormat='Perc: {0}'}" />
-              <Span Text="{Binding Plan}" />
-            </FormattedString>
-          </Label.FormattedText>
-        </Label>
+        <StackLayout Orientation="Horizontal" BindingContext="{Binding HistoryItem}">
+          <Label Text="Plan: "/>
+          <Grid RowSpacing="0">
+            <Grid.Resources>
+              <Style TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+              </Style>
+            </Grid.Resources>
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding WeekDay[0]}"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding WeekDay[1]}"/>
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding WeekDay[2]}"/>
+            <Label Grid.Row="0" Grid.Column="3" Text="{Binding WeekDay[3]}"/>
+            <Label Grid.Row="0" Grid.Column="4" Text="{Binding WeekDay[4]}"/>
+            <Label Grid.Row="0" Grid.Column="5" Text="{Binding WeekDay[5]}"/>
+            <Label Grid.Row="0" Grid.Column="6" Text="{Binding WeekDay[6]}"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding StartTime[0]}"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding StartTime[1]}"/>
+            <Label Grid.Row="1" Grid.Column="2" Text="{Binding StartTime[2]}"/>
+            <Label Grid.Row="1" Grid.Column="3" Text="{Binding StartTime[3]}"/>
+            <Label Grid.Row="1" Grid.Column="4" Text="{Binding StartTime[4]}"/>
+            <Label Grid.Row="1" Grid.Column="5" Text="{Binding StartTime[5]}"/>
+            <Label Grid.Row="1" Grid.Column="6" Text="{Binding StartTime[6]}"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="{Binding Duration[0]}"/>
+            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Duration[1]}"/>
+            <Label Grid.Row="2" Grid.Column="2" Text="{Binding Duration[2]}"/>
+            <Label Grid.Row="2" Grid.Column="3" Text="{Binding Duration[3]}"/>
+            <Label Grid.Row="2" Grid.Column="4" Text="{Binding Duration[4]}"/>
+            <Label Grid.Row="2" Grid.Column="5" Text="{Binding Duration[5]}"/>
+            <Label Grid.Row="2" Grid.Column="6" Text="{Binding Duration[6]}"/>
+          </Grid>
+        </StackLayout>
       </StackLayout>
     </Grid>
   </ContentPage.Content>

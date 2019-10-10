@@ -32,5 +32,10 @@ namespace XamarinApp.WPF
       base.OnActivated(e);
       if( !topBarsRemoved ) RemoveTopBars();
     }
+
+    protected override void OnClosed(EventArgs e) {
+      XamarinApp.App.Instance.Logout();
+      base.OnClosed(e);
+    }
   }
 }
