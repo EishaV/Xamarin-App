@@ -30,17 +30,22 @@ namespace XamarinApp {
           ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = -1;
           ImgPitch.HeightRequest = ImgRoll.HeightRequest = ImgYaw.HeightRequest = height / 6;
           StackStat.Orientation = StackOrientation.Vertical;
+          StackStat.HorizontalOptions = LayoutOptions.Center;
+          StackDist.Orientation = StackWork.Orientation = StackOrientation.Horizontal;
         } else {
           FlexMain.Direction = FlexDirection.Column;
           StackOrient.Orientation = StackOrientation.Horizontal;
           StackPitch.Orientation = StackRoll.Orientation = StackYaw.Orientation = StackOrientation.Vertical;
           // sonst fehlen bei WPF beim ersten Afruf die Bilder ...
-          ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = 200/150 * height / 9.0;
-          ImgPitch.HeightRequest = ImgRoll.HeightRequest = ImgYaw.HeightRequest = height / 9;
+          ImgPitch.WidthRequest = ImgRoll.WidthRequest = ImgYaw.WidthRequest = -1;
+          ImgPitch.HeightRequest = ImgRoll.HeightRequest = ImgYaw.HeightRequest = height / 9.0;
           StackStat.Orientation = StackOrientation.Horizontal;
+          StackStat.HorizontalOptions = LayoutOptions.Fill;
+          StackDist.Orientation = StackWork.Orientation = StackOrientation.Vertical;
+          LabelBlade.WidthRequest = (width - 20) / 3.0;
         }
-        System.Diagnostics.Debug.WriteLine("WxH {0:N0}x{1:N0} {2:N0}x{3:N0} {4:N0}x{5:N0}",
-          width, height, FlexMain.Width, FlexMain.Height, FlexBack.Width, FlexBack.Height);
+        //System.Diagnostics.Debug.WriteLine("WxH {0:N0}x{1:N0} {2:N0}x{3:N0} {4:N0}x{5:N0}",
+        //  width, height, FlexMain.Width, FlexMain.Height, FlexBack.Width, FlexBack.Height);
       }
     }
   }

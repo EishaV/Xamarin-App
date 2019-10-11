@@ -5,7 +5,7 @@
              x:Class="XamarinApp.StatusPage"
              Title="Status">
   <ContentPage.Content>
-    <FlexLayout Direction="Column" JustifyContent="End" x:Name="FlexMain" BackgroundColor="DarkGray">
+    <FlexLayout Direction="Column" JustifyContent="SpaceBetween" x:Name="FlexMain" BackgroundColor="DarkGray">
       <FlexLayout.Resources>
         <Style TargetType="Label">
           <Setter Property="VerticalOptions" Value="Center"/>
@@ -15,7 +15,7 @@
           </Setter>
         </Style>
       </FlexLayout.Resources>
-      <Grid FlexLayout.Grow="4" Padding="5" BackgroundColor="DarkRed">
+      <Grid Padding="5" BackgroundColor="DarkRed">
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
@@ -88,38 +88,50 @@
         </Grid>
       </Grid>
 
-      <FlexLayout x:Name="FlexBack" FlexLayout.Grow="2" Direction="Column" JustifyContent="SpaceBetween" AlignItems="Stretch" BackgroundColor="DarkViolet">
-        <StackLayout x:Name="StackOrient" Orientation="Horizontal" Margin="10,0,10,0" Spacing="5" BackgroundColor="DarkBlue">
-          <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0">
+      <!-- FlexLayout.Grow="2" Direction="Column" JustifyContent="SpaceBetween" AlignItems="Stretch" -->
+      <Grid BackgroundColor="DarkViolet">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout Grid.Row="0" x:Name="StackOrient" Orientation="Horizontal" Margin="10,0,10,0" Spacing="5" BackgroundColor="DarkBlue">
+          <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0" Spacing="0">
             <Image x:Name="ImgPitch" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Pitch, StringFormat="Steigung: {0}°"}' HorizontalOptions="Center"/>
+            <Label Text='{Binding Mower.Pitch, StringFormat=" Steigung: {0}° "}' HorizontalOptions="Center"/>
           </StackLayout>
-          <StackLayout x:Name="StackRoll" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0">
+          <StackLayout x:Name="StackRoll" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0" Spacing="0">
             <Image x:Name="ImgRoll" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Roll, StringFormat="Neigung: {0}°"}' HorizontalOptions="Center"/>
+            <Label Text='{Binding Mower.Roll, StringFormat=" Neigung: {0}° "}' HorizontalOptions="Center"/>
           </StackLayout>
-          <StackLayout x:Name="StackYaw" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0">
-            <Image x:Name="ImgYaw" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Yaw, StringFormat="Richtung: {0}°"}' HorizontalOptions="Center"/>
-          </StackLayout>
-        </StackLayout>
-
-        <StackLayout x:Name="StackStat" Orientation="Horizontal" Margin="10,0,10,0" Spacing="5" BackgroundColor="DarkGreen">
-          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Padding="0">
-            <Label Text="T-Mäh:" HorizontalOptions="StartAndExpand"/>
-            <Label Text='{Binding Mower.BladeTime, StringFormat="{0}", FallbackValue="0.00:00:00"}'/>
-          </StackLayout>
-          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Padding="0">
-            <Label Text="S-Ges:"  HorizontalOptions="StartAndExpand"/>
-            <Label Text='{Binding Mower.Distance, StringFormat="{0:n0}m", FallbackValue=1000000}'/>
-          </StackLayout>
-          <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Padding="0">
-            <Label Text="T-Ges:" HorizontalOptions="StartAndExpand"/>
-            <Label Text='{Binding Mower.WorkTime, StringFormat="{0}", FallbackValue="0.00:00:00"}'/>
+          <StackLayout x:Name="StackYaw" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="0" Spacing="0">
+            <Image x:Name="ImgYaw" Source="Orient_Yaw.png" Aspect="AspectFill" HorizontalOptions="Center"/>
+            <Label Text='{Binding Mower.Yaw, StringFormat=" Richtung: {0}° "}' HorizontalOptions="Center"/>
           </StackLayout>
         </StackLayout>
 
-        <Label FlexLayout.AlignSelf="Center" BackgroundColor="DarkKhaki">
+        <StackLayout Grid.Row="1" x:Name="StackStat" Orientation="Horizontal" HorizontalOptions="Fill" Margin="10,0,10,0" BackgroundColor="DarkGreen">
+          <Label x:Name="LabelBlade" LineBreakMode="WordWrap">
+            <Label.FormattedText>
+              <FormattedString>
+                <Span Text="Mähzeit:"/>
+                <Span Text=" "/>
+                <Span Text="{Binding Mower.BladeTime, StringFormat=' {0}', FallbackValue=0.00:00:00}"/>
+              </FormattedString>
+            </Label.FormattedText>
+          </Label>
+          <StackLayout x:Name="StackDist" Spacing="0">
+            <Label Text="Distanz:" HorizontalOptions="StartAndExpand"/>
+            <Label Text='{Binding Mower.Distance, StringFormat=" {0:N0}m", FallbackValue=100000}' HorizontalOptions="EndAndExpand"/>
+          </StackLayout>
+          <StackLayout x:Name="StackWork" Spacing="0">
+            <Label Text="Laufzeit:" HorizontalOptions="Start"/>
+            <Label Text="{Binding Mower.WorkTime, StringFormat=' {0}', FallbackValue=0.00:00:00}" HorizontalOptions="End"/>
+          </StackLayout>
+        </StackLayout>
+
+        <Label Grid.Row="2" FlexLayout.AlignSelf="Center" BackgroundColor="DarkKhaki">
           <Label.Font>
             <OnPlatform x:TypeArguments="Font">
               <On Platform="Android" Value="Normal, Italic"/>
@@ -135,7 +147,7 @@
           </Label.FormattedText>
         </Label>
 
-        <StackLayout FlexLayout.AlignSelf="Center" Orientation="Horizontal" BackgroundColor="DimGray">
+        <StackLayout Grid.Row="3" FlexLayout.AlignSelf="Center" Orientation="Horizontal" BackgroundColor="DimGray">
           <ImageButton Command="{Binding PollCommand}" Source="Button_Home.png" BackgroundColor="Transparent" />
           <ImageButton Command="{Binding PollCommand}" Source="Button_Play.png" BackgroundColor="Transparent" />
           <ImageButton Command="{Binding PollCommand}" Source="Button_Pause.png" BackgroundColor="Transparent" />
@@ -143,7 +155,7 @@
           <ImageButton Command="{Binding PollCommand}" Source="Button_Poll.png" BackgroundColor="Transparent" />
         </StackLayout>
 
-      </FlexLayout>
+      </Grid>
     </FlexLayout>
 
   </ContentPage.Content>
