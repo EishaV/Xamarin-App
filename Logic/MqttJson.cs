@@ -36,13 +36,13 @@ namespace MqttJson{
     GRASS_CUTTING = 7,
     LIFT_RECOVERY = 8,
     TRAPPED_RECOVERY = 9,
-    BLADE_BLOCKED_RECOVERY = 10,
+    BLADE_RECOVERY = 10,
     DEBUG = 11,
     REMOTE_CONTROL = 12,
-    APP_WIRE_FOLLOW_GOING_HOME = 30,
-    APP_WIRE_FOLLOW_AREA_TRAINING = 31,
-    APP_WIRE_FOLLOW_BORDER_CUT = 32,
-    APP_WIRE_FOLLOW_AREA_SEARCH = 33,
+    GOING_HOME = 30,
+    AREA_TRAINING = 31,
+    BORDER_CUT = 32,
+    AREA_SEARCH = 33,
     PAUSE = 34
   }
   public enum ChargeCoge : int {
@@ -76,7 +76,7 @@ namespace MqttJson{
             "sn":"..."},
     "dat":{ "mac":"F0FE6B...",
             "fw":2.69,
-            "bt":{"t":31.7,"v":19.53,"p":82,"nr":910,"c":0},
+            "bt":{"t":31.7,"v":19.53,"p":82,"nr":910,"c":0, "m":0},
             "dmp":[3.3,-3.2,328.8],
             "st":{"b":20010,"d":315068,"wt":21307},
             "ls":1,
@@ -110,6 +110,7 @@ namespace MqttJson{
     [DataMember(Name = "p")]    public float Perc;
     [DataMember(Name = "nr")]   public int Cycle;
     [DataMember(Name = "c")]    public ChargeCoge Charging;
+    [DataMember(Name = "m")]    public int Mode;
   }
 
   [DataContract] public struct Statistic {

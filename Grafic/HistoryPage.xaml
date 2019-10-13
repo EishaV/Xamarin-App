@@ -1,73 +1,145 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:XamarinApp; assembly=XamarinApp"
+             xmlns:viewModels="clr-namespace:XamarinApp;assembly=XamarinApp"
              x:Class="XamarinApp.HistoryPage"
              Title="Historie">
   <ContentPage.BindingContext>
     <viewModels:HistoryModel/>
   </ContentPage.BindingContext>
-    <ContentPage.Content>
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="7*" />
-        <RowDefinition Height="3*" />
-      </Grid.RowDefinitions>
-      <ListView Grid.Row="0"  ItemsSource="{Binding History}" SelectionMode="Single" SelectedItem="{Binding HistoryItem}">
+  <ContentPage.Content>
+    <StackLayout x:Name="Main" Orientation="Vertical">
+
+      <ListView x:Name="Master" ItemsSource="{Binding History}" SelectionMode="Single" SelectedItem="{Binding HistoryItem, Mode=TwoWay}" RowHeight="30">
         <ListView.ItemTemplate>
           <DataTemplate>
             <ViewCell>
-              <StackLayout Orientation="Horizontal">
-                <Label Text="{Binding Stamp}"/>
-                <Label Text="{Binding Mqtt.Dat.Error}"/>
-                <Label Text="{Binding Mqtt.Dat.State}"/>
-              </StackLayout>
+              <Grid RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="{Binding Stamp}"/>
+                <Label Grid.Column="1" Text="{Binding Error}"/>
+                <Label Grid.Column="2" Text="{Binding State}"/>
+              </Grid>
             </ViewCell>
+            <!--
+            <TextCell Text="{Binding Text}" TextColor="Black" />
+            <StackLayout Orientation="Horizontal">
+            </StackLayout>
+            -->
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
-      <StackLayout Grid.Row="1" Orientation="Vertical">
-        <Label BindingContext="{Binding HistoryItem.Mqtt.Cfg}">
-          <Label.FormattedText>
-            <FormattedString>
-              <Span Text="{Binding Date, StringFormat='Date: {0}'}" />
-              <Span Text="{Binding Time, StringFormat=' Time: {0}'}" />
-              <Span Text="{Binding Schedule.Perc, StringFormat=' Corr: {0}'}"/>
-            </FormattedString> 
-          </Label.FormattedText>
-        </Label>
-        <StackLayout Orientation="Horizontal" BindingContext="{Binding HistoryItem}">
-          <Label Text="Plan: "/>
-          <Grid RowSpacing="0">
-            <Grid.Resources>
-              <Style TargetType="Label">
-                <Setter Property="HorizontalOptions" Value="Center"/>
-              </Style>
-            </Grid.Resources>
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding WeekDay[0]}"/>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding WeekDay[1]}"/>
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding WeekDay[2]}"/>
-            <Label Grid.Row="0" Grid.Column="3" Text="{Binding WeekDay[3]}"/>
-            <Label Grid.Row="0" Grid.Column="4" Text="{Binding WeekDay[4]}"/>
-            <Label Grid.Row="0" Grid.Column="5" Text="{Binding WeekDay[5]}"/>
-            <Label Grid.Row="0" Grid.Column="6" Text="{Binding WeekDay[6]}"/>
-            <Label Grid.Row="1" Grid.Column="0" Text="{Binding StartTime[0]}"/>
-            <Label Grid.Row="1" Grid.Column="1" Text="{Binding StartTime[1]}"/>
-            <Label Grid.Row="1" Grid.Column="2" Text="{Binding StartTime[2]}"/>
-            <Label Grid.Row="1" Grid.Column="3" Text="{Binding StartTime[3]}"/>
-            <Label Grid.Row="1" Grid.Column="4" Text="{Binding StartTime[4]}"/>
-            <Label Grid.Row="1" Grid.Column="5" Text="{Binding StartTime[5]}"/>
-            <Label Grid.Row="1" Grid.Column="6" Text="{Binding StartTime[6]}"/>
-            <Label Grid.Row="2" Grid.Column="0" Text="{Binding Duration[0]}"/>
-            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Duration[1]}"/>
-            <Label Grid.Row="2" Grid.Column="2" Text="{Binding Duration[2]}"/>
-            <Label Grid.Row="2" Grid.Column="3" Text="{Binding Duration[3]}"/>
-            <Label Grid.Row="2" Grid.Column="4" Text="{Binding Duration[4]}"/>
-            <Label Grid.Row="2" Grid.Column="5" Text="{Binding Duration[5]}"/>
-            <Label Grid.Row="2" Grid.Column="6" Text="{Binding Duration[6]}"/>
+
+      <StackLayout>
+        <Grid x:Name="Detail" BindingContext="{Binding HistoryItem}" RowSpacing="0" BackgroundColor="Silver">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Label Grid.Column="0" Grid.Row="0" Text="cfg"/>
+          <Label Grid.Column="1" Grid.Row="0" Text="{Binding CfgMain}" LineBreakMode="WordWrap"/>
+          <Label Grid.Column="1" Grid.Row="1" Text="{Binding CfgZone}"/>
+          <Grid Grid.Column="1" Grid.Row="2" RowSpacing="0" IsVisible="{Binding Local}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Text="sc"/>
+            <Label Grid.Column="1" Text="{Binding CfgPlan}" LineBreakMode="WordWrap"/>
           </Grid>
-        </StackLayout>
+          <Label Grid.Column="0" Grid.Row="3" Text="dat"/>
+          <Label Grid.Column="1" Grid.Row="3" Text="{Binding DatMain}" LineBreakMode="WordWrap"/>
+          <Label Grid.Column="1" Grid.Row="4" Text="{Binding DatDmp}" IsVisible="{Binding Local}"/>
+          <Grid Grid.Column="1" Grid.Row="5" RowSpacing="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Text="bt"/>
+            <Label Grid.Column="1" Grid.Row="0" Text="{Binding DatAccu}" LineBreakMode="WordWrap"/>
+            <Label Grid.Column="0" Grid.Row="1" Text="st" IsVisible="{Binding Local}"/>
+            <Label Grid.Column="1" Grid.Row="1" Text="{Binding DatStat}" LineBreakMode="WordWrap" IsVisible="{Binding Local}"/>
+          </Grid>
+        </Grid>
+        
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+          </Grid.ColumnDefinitions>
+          <Button Grid.Column="1" Text="Server" Command="{Binding CmdServer}" />
+          <Button Grid.Column="3" Text="Local" Command="{Binding CmdLocal}" />
+        </Grid>
       </StackLayout>
-    </Grid>
+
+    </StackLayout>
   </ContentPage.Content>
 </ContentPage>
+
+<!--
+        <Grid Grid.Column="1" Grid.Row="1" RowSpacing="0">
+  <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition Width="Auto"/>
+  </Grid.ColumnDefinitions>
+  <Grid.RowDefinitions>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition Height="Auto"/>
+  </Grid.RowDefinitions>
+  <Label Grid.Column="0" Grid.Row="0" Text="sc"/>
+  <Label Grid.Column="0" Grid.Row="1" Text="{Binding Mqtt.Cfg.Schedule.Mode, StringFormat=' m: {0}'}"/>
+  <Label Grid.Column="0" Grid.Row="2" Text="{Binding Mqtt.Cfg.Schedule.Perc, StringFormat=' p: {0}'}"/>
+  <Label Grid.Column="1" Grid.Row="0" Text="{Binding WeekDay[0]}"/>
+  <Label Grid.Column="2" Grid.Row="0" Text="{Binding WeekDay[1]}"/>
+  <Label Grid.Column="3" Grid.Row="0" Text="{Binding WeekDay[2]}"/>
+  <Label Grid.Column="4" Grid.Row="0" Text="{Binding WeekDay[3]}"/>
+  <Label Grid.Column="5" Grid.Row="0" Text="{Binding WeekDay[4]}"/>
+  <Label Grid.Column="6" Grid.Row="0" Text="{Binding WeekDay[5]}"/>
+  <Label Grid.Column="7" Grid.Row="0" Text="{Binding WeekDay[6]}"/>
+  <Label Grid.Column="1" Grid.Row="1" Text="{Binding StartTime[0]}"/>
+  <Label Grid.Column="2" Grid.Row="1" Text="{Binding StartTime[1]}"/>
+  <Label Grid.Column="3" Grid.Row="1" Text="{Binding StartTime[2]}"/>
+  <Label Grid.Column="4" Grid.Row="1" Text="{Binding StartTime[3]}"/>
+  <Label Grid.Column="5" Grid.Row="1" Text="{Binding StartTime[4]}"/>
+  <Label Grid.Column="6" Grid.Row="1" Text="{Binding StartTime[5]}"/>
+  <Label Grid.Column="7" Grid.Row="1" Text="{Binding StartTime[6]}"/>
+  <Label Grid.Column="1" Grid.Row="2" Text="{Binding Duration[0]}"/>
+  <Label Grid.Column="2" Grid.Row="2" Text="{Binding Duration[1]}"/>
+  <Label Grid.Column="3" Grid.Row="2" Text="{Binding Duration[2]}"/>
+  <Label Grid.Column="4" Grid.Row="2" Text="{Binding Duration[3]}"/>
+  <Label Grid.Column="5" Grid.Row="2" Text="{Binding Duration[4]}"/>
+  <Label Grid.Column="6" Grid.Row="2" Text="{Binding Duration[5]}"/>
+  <Label Grid.Column="7" Grid.Row="2" Text="{Binding Duration[6]}"/>
+  </Grid>
+-->
