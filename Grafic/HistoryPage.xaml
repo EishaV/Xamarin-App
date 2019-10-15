@@ -52,7 +52,7 @@
           </Grid.RowDefinitions>
           <Label Grid.Column="0" Grid.Row="0" Text="cfg"/>
           <Label Grid.Column="1" Grid.Row="0" Text="{Binding CfgMain}" LineBreakMode="WordWrap"/>
-          <Label Grid.Column="1" Grid.Row="1" Text="{Binding CfgZone}"/>
+          <Label Grid.Column="1" Grid.Row="1" Text="{Binding CfgZone}" LineBreakMode="WordWrap"/>
           <Grid Grid.Column="1" Grid.Row="2" RowSpacing="0" IsVisible="{Binding Local}">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
