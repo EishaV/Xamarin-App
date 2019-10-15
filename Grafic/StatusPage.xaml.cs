@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace XamarinApp {
   [XamlCompilation(XamlCompilationOptions.Compile)]
   public partial class StatusPage : ContentPage {
-    double ow = Double.NaN, oh = Double.NaN;
+    double ow = 0, oh = 0;
 
     public StatusPage() {
       InitializeComponent();
@@ -21,7 +21,7 @@ namespace XamarinApp {
     protected override void OnSizeAllocated(double width, double height) {
       base.OnSizeAllocated(width, height);
 
-      if( ow != width || oh != height ) {
+      if( Math.Abs(ow - width) > 50 || Math.Abs(oh - height) > 50 ) {
         ow = width; oh = height;
         if( width > 1.1 * height ) {
           FlexMain.Direction = FlexDirection.Row;

@@ -111,7 +111,7 @@ namespace XamarinApp {
         Trace("Broker", wc.Broker);
 
         if( true && wc.States.Count > 0 ) {
-          Recv(this, new MyEventArgs(wc.States[0]));
+          OnRecv(this, new MyEventArgs(wc.States[0]));
         }
         if( wc.Broker != null && wc.Cert != null && wc.Products != null && wc.Products.Count > 0 ) {
           LsProductItem pi = wc.Products[0];

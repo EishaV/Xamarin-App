@@ -16,11 +16,12 @@ namespace GameOfLife.GTK
       var app = new App();
       var window = new FormsWindow();
       window.LoadApplication(app);
-      window.SetApplicationTitle("Landroid App");
-      window.Resize(400, 450);
+      window.SetApplicationTitle("Miss Land App");
+      window.Resize(400, 500);
       window.Show();
 
       Gtk.Application.Run();
+      XamarinApp.App.Instance.Logout();
     }
   }
 }

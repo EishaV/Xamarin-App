@@ -4,7 +4,6 @@
             xmlns:local="clr-namespace:XamarinApp;assembly=XamarinApp"
             x:Class="XamarinApp.MainPage"
             >
-  <local:TodayPage />
 	<local:UserPage />
   <local:StatusPage />
   <local:HistoryPage/>
