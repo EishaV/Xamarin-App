@@ -11,7 +11,7 @@
           <Setter Property="VerticalOptions" Value="Center"/>
           <Setter Property="TextColor" Value="White"/>
           <Setter Property="FontSize">
-            <OnPlatform WPF="15" GTK="12"/>
+            <OnPlatform WPF="15" GTK="10"/>
           </Setter>
         </Style>
       </FlexLayout.Resources>
@@ -92,21 +92,21 @@
       </Grid>
 
       <!-- FlexLayout.Grow="2" Direction="Column" JustifyContent="SpaceBetween" AlignItems="Stretch" -->
-      <Grid BackgroundColor="DarkViolet" Margin="10,0,10,0">
-        <Grid.RowDefinitions>
+      <StackLayout BackgroundColor="DarkViolet" Margin="10,0,10,0">
+        <!--<Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <StackLayout Grid.Row="0" x:Name="StackOrient" Orientation="Horizontal" Spacing="5" BackgroundColor="DarkBlue">
-          <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
-            <Image x:Name="ImgPitch" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Pitch, StringFormat=" Steigung: {0}° "}' HorizontalOptions="Center"/>
-          </StackLayout>
+        </Grid.RowDefinitions>-->
+        <StackLayout x:Name="StackOrient" Orientation="Horizontal" Spacing="5" BackgroundColor="DarkBlue">
           <StackLayout x:Name="StackRoll" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
             <Image x:Name="ImgRoll" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="Center"/>
             <Label Text='{Binding Mower.Roll, StringFormat=" Neigung: {0}° "}' HorizontalOptions="Center"/>
+          </StackLayout>
+          <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
+            <Image x:Name="ImgPitch" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center"/>
+            <Label Text='{Binding Mower.Pitch, StringFormat=" Steigung: {0}° "}' HorizontalOptions="Center"/>
           </StackLayout>
           <StackLayout x:Name="StackYaw" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
             <Image x:Name="ImgYaw" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="Center"/>
@@ -146,14 +146,14 @@
         </Label>
 
         <StackLayout Grid.Row="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" BackgroundColor="DimGray">
-          <ImageButton Command="{Binding PollCommand}" Source="Button_Home.png" BackgroundColor="Transparent" />
+          <Button Command="{Binding PollCommand}" ImageSource="Button_Home.png" BackgroundColor="Transparent" />
           <ImageButton Command="{Binding PollCommand}" Source="Button_Play.png" BackgroundColor="Transparent" />
           <ImageButton Command="{Binding PollCommand}" Source="Button_Pause.png" BackgroundColor="Transparent" />
           <BoxView WidthRequest="20" />
           <Button Command="{Binding PollCommand}" ImageSource="Button_Poll.png" BackgroundColor="Transparent" />
         </StackLayout>
 
-      </Grid>
+      </StackLayout>
       
     </FlexLayout>
   </ContentPage.Content>

@@ -17,7 +17,7 @@ namespace GameOfLife.GTK
       var window = new FormsWindow();
       window.LoadApplication(app);
       window.SetApplicationTitle("Miss Land App");
-      window.Resize(400, 500);
+      window.Resize(300, 500);
       window.Show();
 
       Gtk.Application.Run();
