@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MqttService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -107,6 +108,10 @@
     <ProjectReference Include="..\Grafic\XamarinApp.csproj">
       <Project>{52c39e86-fbdf-400b-9419-88040aa0c954}</Project>
       <Name>XamarinApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logic\Logic.csproj">
+      <Project>{96445c56-e441-4b41-82b5-1b04d9eaea3d}</Project>
+      <Name>Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

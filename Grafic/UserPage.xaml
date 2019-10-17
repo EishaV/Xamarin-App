@@ -3,26 +3,31 @@
 			       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 			       x:Class="XamarinApp.UserPage"
 			       Title="User">
-	<ContentPage.Content>
-    <StackLayout HorizontalOptions="Start">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
-          <RowDefinition Height="*" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Label Text="Uuid" Grid.Row="0" Grid.Column="0" />
-        <Entry Text="{Binding Uuid}" IsEnabled="False" Grid.Row="0" Grid.Column="1" />
-        <Label Text="Email" Grid.Row="1" Grid.Column="0" />
-        <Entry Text="{Binding Email}" Placeholder="name@domain.ext" Keyboard="Email" IsSpellCheckEnabled="False" Grid.Row="1" Grid.Column="1" />
-        <Label Text="Kennwort" Grid.Row="2" Grid.Column="0" />
-        <Entry Text="{Binding Pass}" Placeholder="password" Keyboard="Text" IsPassword="True" Grid.Row="2" Grid.Column="1"/>
-      </Grid>
-      <Button Text="Login" Clicked="OnLoginClicked" />
-    </StackLayout>
+  <ContentPage.Content>
+    <Grid Padding="10">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="10" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Label Grid.Column="0" Grid.Row="0" Text="Uuid" />
+      <Entry Text="{Binding Uuid}" IsEnabled="False" Grid.Row="0" Grid.Column="1" />
+      <Label Text="Email" Grid.Row="1" Grid.Column="0" />
+      <Entry Text="{Binding Email}" Placeholder="name@domain.ext" Keyboard="Email" IsSpellCheckEnabled="False" Grid.Row="1" Grid.Column="1" />
+      <Label Text="Kennwort" Grid.Row="2" Grid.Column="0" />
+      <Entry Text="{Binding Pass}" Placeholder="password" Keyboard="Text" IsPassword="True" Grid.Row="2" Grid.Column="1"/>
+      <StackLayout Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+        <Button Text="Login" Clicked="OnLoginClicked" />
+        <Button Text="Test" Clicked="OnTestClicked" />
+        <Label x:Name="Test"/>
+        <Label Text="{Binding Testat}"/>
+      </StackLayout>
+    </Grid>
   </ContentPage.Content>
 </ContentPage> 

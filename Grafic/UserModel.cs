@@ -35,8 +35,16 @@ namespace XamarinApp {
       set { _pass = value; OnPropertyChanged(nameof(Pass)); }
     }
 
+    string _Testat;
+    public string Testat {
+      get { return _Testat; }
+      set { _Testat = value; OnPropertyChanged(nameof(Testat)); }
+    }
+
     public UserModel() {
       JsonConfig cfg = (Application.Current as App)?.Config;
+
+      App.Instance.UserModel = this;
 
       if( cfg != null ) {
         Uuid = cfg.Uuid;

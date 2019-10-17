@@ -22,15 +22,14 @@ namespace XamarinApp {
     string CfgFile;
 
     WebClient _wc = null;
-    AwsClient _ac = null;
 
-    public event EventHandler<MyEventArgs> Recv;
+    public UserModel UserModel = null;
 
     private readonly ObservableCollection<TraceItem> _TraceItems = new ObservableCollection<TraceItem>();
 
     public ObservableCollection<TraceItem> TraceItems { get { return _TraceItems; } }
 
-    public ObservableCollection<HistoryItem> History { get; } = new ObservableCollection<HistoryItem>();
+    public static ObservableCollection<HistoryItem> History { get; } = new ObservableCollection<HistoryItem>();
 
     public static App Instance {
       get { return Application.Current as App; }
@@ -41,7 +40,9 @@ namespace XamarinApp {
       set { if( Instance != null ) Instance._wc = value; }
     }
 
-    public AwsClient Aws {
+    static AwsClient _ac = null;
+
+    public static AwsClient Aws {
       get { return _ac; }
       set {
         _ac = value;
@@ -49,12 +50,14 @@ namespace XamarinApp {
       }
     }
 
-    public JsonConfig Config { get; private set; }
+    public static event EventHandler<MyEventArgs> Recv;
 
-    private void OnRecv(object sender, MyEventArgs e) {
+    private static void OnRecv(object sender, MyEventArgs e) {
       Recv?.Invoke(sender, e);
       History.Add(new HistoryItem(DateTime.Now, e.Mqtt));
     }
+
+    public JsonConfig Config { get; private set; }
 
     static public void Err(String s) {
       Instance.MainPage.DisplayAlert("Error", s, "OK");
@@ -92,12 +95,10 @@ namespace XamarinApp {
     protected override void OnStart() {
       // Handle when your app starts
     }
-
     protected override void OnSleep() {
       //Logout();
       // Handle when your app sleeps
     }
-
     protected override void OnResume() {
       // Handle when your app resumes
     }
@@ -110,19 +111,14 @@ namespace XamarinApp {
       if( wc.Login(email, pass, uuid) ) {
         Trace("Broker", wc.Broker);
 
+        App.Web = wc;
         if( true && wc.States.Count > 0 ) {
           OnRecv(this, new MyEventArgs(wc.States[0]));
         }
         if( wc.Broker != null && wc.Cert != null && wc.Products != null && wc.Products.Count > 0 ) {
           LsProductItem pi = wc.Products[0];
-          AwsClient ac = new AwsClient(wc.Broker, uuid, wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
 
-          if( ac.Start(true) && Application.Current is App ) {
-            App app = Application.Current as App;
-
-            App.Web = wc;
-            app.Aws = ac;
-          }
+          DependencyService.Get<IMqttService>().Start(wc.Broker, uuid, wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
         }
       }
 
@@ -135,7 +131,7 @@ namespace XamarinApp {
     }
 
     public void Logout() {
-      AwsClient ac = (Application.Current as App)?.Aws;
+      AwsClient ac = App.Aws;
 
       if( ac != null && ac.Connected ) ac.Exit();
     }

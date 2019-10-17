@@ -41,9 +41,9 @@ namespace XamarinApp {
     public ICommand PollCommand { protected set; get; }
 
     public StatusModel() {
-      PollCommand = new Command(() => App.Instance.Aws?.Poll());
+      PollCommand = new Command(() => App.Aws?.Poll());
 
-      App.Instance.Recv += Recv;
+      App.Recv += Recv;
 
       //Mowers = new List<Mower>();
       Mower = new Mower() {

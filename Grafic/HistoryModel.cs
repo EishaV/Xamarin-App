@@ -123,7 +123,7 @@ namespace XamarinApp {
   }
 
   class HistoryModel : BaseView {
-    public ObservableCollection<HistoryItem> History { get; private set; } = App.Instance.History;
+    public ObservableCollection<HistoryItem> History { get; private set; } = App.History;
 
     private HistoryItem _Selected;
     public HistoryItem HistoryItem {
@@ -146,7 +146,7 @@ namespace XamarinApp {
     }
 
     private void LocalHis() {
-      History = App.Instance.History;
+      History = App.History;
       OnPropertyChanged(nameof(History));
       if( History.Count > 0 ) HistoryItem = History[0];
     }

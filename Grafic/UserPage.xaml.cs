@@ -19,6 +19,11 @@ namespace XamarinApp {
 
       (BindingContext as UserModel).Login();
     }
+
+    void OnTestClicked(object sender, EventArgs args) {
+      string sys = DependencyService.Get<IMqttService>().GetSystem();
+      Test.Text = sys;
+    }
   }
 }
 
