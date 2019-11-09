@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using XamarinApp.Droid;
 using Logic;
 using Android;
+using MqttJson;
 
 [assembly: Dependency(typeof(MqttService))]
 namespace XamarinApp.Droid {
@@ -23,12 +24,74 @@ namespace XamarinApp.Droid {
     public const string ACTION_MAIN_ACTIVITY = "ServicesDemo3.action.MAIN_ACTIVITY";
   }
 
-  public static class Util {
-    public static string Broker;
-    public static string Uuid;
-    public static X509Certificate2 Cert;
-    public static string CmdIn, CmdOut;
+  [BroadcastReceiver]
+  public class RepeatingAlarm : BroadcastReceiver {
+    public override void OnReceive(Context context, Intent intent) {
+      //Every time the `RepeatingAlarm` is fired, set the next alarm
+      //Intent intent = new Intent(context, typeof(RepeatingAlarm));
+      PendingIntent source = PendingIntent.GetBroadcast(context, 0, intent, 0);
+      AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+      LsMqtt mqtt = App.Web.GetLastState("Gustav");
+
+      if( mqtt != null ) {
+        mqtt.Dat.Firmware = "1.23";
+        App.History.Add(new HistoryItem(DateTime.Now, mqtt));
+        System.Diagnostics.Debug.WriteLine("Alarm {0} {1}", DateTime.Now, "ups");
+      }
+      am.SetAndAllowWhileIdle(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + 30 * 60 * 1000, source);
+      //Toast.MakeText(context, "repeating_received and after 15s another alarm will be fired", ToastLength.Short).Show();
+    }
   }
+
+  public class MqttService : IMqttService {
+    PendingIntent _penint = null;
+
+    public string GetSystem() {
+      App.Instance.UserModel.Testat = "Android";
+      return "Droid";
+    }
+    public bool Start() {
+      Context context = Android.App.Application.Context;
+      AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+      NotificationManager nm = (NotificationManager)context.GetSystemService(Context.NotificationService);
+
+      _penint = PendingIntent.GetBroadcast(context, 0, new Intent(context, typeof(RepeatingAlarm)), 0);
+      am.SetAndAllowWhileIdle(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + 30 * 60 * 1000, _penint);
+
+      var notIntent = new Intent(context, typeof(MainActivity));
+      var contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
+      // Build the notification:
+      var builder = new Notification.Builder(context, MainActivity.cn)
+                    .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+                    .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
+                    .SetContentTitle("title") // Set the title
+                    //.SetNumber(count) // Display the count in the Content Info
+                    .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
+                    .SetContentText("message start"); // the message to display.
+                                              // Finally, publish the notification:
+      nm.Notify(1000, builder.Build());
+      return true;
+    }
+    public bool Stop() {
+      Context context = Android.App.Application.Context;
+      AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+
+      if( _penint != null ) am.Cancel(_penint);
+      return true;
+    }
+
+  }
+}
+
+/*
+    Intent startServiceIntent;
+    Intent stopServiceIntent;
+
+      //startServiceIntent = new Intent(Android.App.Application.Context, typeof(OreoService));
+      //startServiceIntent.SetAction(Constants.ACTION_START_SERVICE);
+      //Android.App.Application.Context.StartService(startServiceIntent);
+      //Log.Info("TAG", "User requested that the service be started.");
+
 
   [Service]
   public class OreoService : Service {
@@ -172,31 +235,4 @@ namespace XamarinApp.Droid {
       return action;
     }
   }
-
-  public class MqttService : IMqttService {
-    Intent startServiceIntent;
-    Intent stopServiceIntent;
-    public string GetSystem() {
-      App.Instance.UserModel.Testat = "Android";
-      return "Droid";
-    }
-    public bool Start(string broker, string uuid, X509Certificate2 cert, string cmdIn, string cmdOut) {
-      Util.Broker = broker;
-      Util.Uuid = uuid;
-      Util.Cert = cert;
-      Util.CmdIn = cmdIn;
-      Util.CmdOut = cmdOut;
-
-      startServiceIntent = new Intent(Android.App.Application.Context, typeof(OreoService));
-      startServiceIntent.SetAction(Constants.ACTION_START_SERVICE);
-      Android.App.Application.Context.StartService(startServiceIntent);
-      Log.Info("TAG", "User requested that the service be started.");
-
-      return true;
-    }
-    public bool Stop() {
-      return true;
-    }
-
-  }
-}
+*/

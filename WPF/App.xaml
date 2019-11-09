@@ -8,6 +8,9 @@
       <Style TargetType="Label">
         <Setter Property="FontSize" Value="15"/>
       </Style>
+      <Style TargetType="ListViewItem">
+        <Setter Property="FontSize" Value="12"/>
+      </Style>
     </ResourceDictionary>
   </Application.Resources>
 </Application>

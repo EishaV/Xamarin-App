@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 using Xamarin.Forms;
 
@@ -9,6 +12,36 @@ using Logic;
 using System;
 
 namespace XamarinApp {
+  public class MyTraceListener : TraceListener {
+    string LastWrite = null;
+    public override void Write(string message) {
+      LastWrite = message;
+    }
+
+    public override void WriteLine(string message) {
+      string t, s;
+      Regex r1 = new Regex(@"[^ ]+ ([^:]+):.*");
+      Regex r2 = new Regex(@"(.*) => (.*)");
+      Match m;
+
+      t = DateTime.Now.ToString("HH:mm:ss ");
+      if( LastWrite != null && (m = r1.Match(LastWrite)).Success ) t += m.Groups[1].Value;
+      else t += "Unknown";
+      t += ": ";
+      m = r2.Match(message);
+      if( m.Success ) {
+        t += m.Groups[1].Value;
+        s = m.Groups[2].Value;
+      } else {
+        t += message;
+        s = string.Empty;
+      }
+      App.Instance.TraceItems.Add(new TraceItem(t, s));
+      LastWrite = null;
+    }
+  }
+
+
   public class TraceItem {
     public string Name { get; set; }
     public string Text { get; set; }
@@ -59,16 +92,9 @@ namespace XamarinApp {
 
     public JsonConfig Config { get; private set; }
 
-    static public void Err(String s) {
-      Instance.MainPage.DisplayAlert("Error", s, "OK");
-    }
-
-    static public void Trace(String name, string text) {
-      Instance.TraceItems.Add(new TraceItem(name, text));
-      //MessagingCenter.Send(Application.Current, "Trace", new TraceItem(name, text));
-    }
-
     public App() {
+      Trace.Listeners.Add(new MyTraceListener());
+
       AppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
       if( !Directory.Exists(AppData) ) Directory.CreateDirectory(AppData);
       CfgFile = Path.Combine(AppData, "Config.json");
@@ -79,7 +105,8 @@ namespace XamarinApp {
         try {
           Config = (JsonConfig)dcjs.ReadObject(fs);
         } catch( Exception ex ) {
-          Err(string.Format("Exception Config.json: '{0}'\r\n", ex.ToString()));
+          Trace.TraceError("Read Config => {0}", ex.ToString());
+          //MainPage.DisplayAlert("Exception Config.json", ex.ToString(), ":-/");
         }
         fs.Close();
       } else {
@@ -87,9 +114,9 @@ namespace XamarinApp {
         Config.Uuid = Guid.NewGuid().ToString();
       }
 
-      Trace("App created", Config.ToString());
-
       MainPage = new XamarinApp.MainPage();
+
+      Trace.TraceInformation("App created", Config.ToString());
     }
 
     protected override void OnStart() {
@@ -98,28 +125,30 @@ namespace XamarinApp {
     protected override void OnSleep() {
       //Logout();
       // Handle when your app sleeps
+      DependencyService.Get<IMqttService>().Start();
     }
     protected override void OnResume() {
+      DependencyService.Get<IMqttService>().Stop();
       // Handle when your app resumes
     }
 
     public void Login(string uuid, string email, string pass) {
       WebClient wc = new WebClient("https://api.worxlandroid.com/api/v2/", "nCH3A0WvMYn66vGorjSrnGZ2YtjQWDiCvjg7jNxK");
-      UI.SetLog(App.Trace);
-      UI.SetErr(App.Err);
 
       if( wc.Login(email, pass, uuid) ) {
-        Trace("Broker", wc.Broker);
-
         App.Web = wc;
         if( true && wc.States.Count > 0 ) {
           OnRecv(this, new MyEventArgs(wc.States[0]));
         }
         if( wc.Broker != null && wc.Cert != null && wc.Products != null && wc.Products.Count > 0 ) {
           LsProductItem pi = wc.Products[0];
+          AwsClient ac = new AwsClient(wc.Broker, uuid, wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
 
-          DependencyService.Get<IMqttService>().Start(wc.Broker, uuid, wc.Cert, pi.Topic.CmdIn, pi.Topic.CmdOut);
-        }
+          if( ac.Start() ) {
+            XamarinApp.App.Aws = ac;
+            DependencyService.Get<IMqttService>().Start();
+          } else MainPage.DisplayAlert("Alert", "Connect failed see Trace", ":-(");
+        } else MainPage.DisplayAlert("Alert", "Login failed see Trace", ":-(");
       }
 
       JsonConfig x = new JsonConfig { Uuid = uuid, Email = email, Password = pass };

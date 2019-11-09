@@ -47,7 +47,8 @@ namespace XamarinApp {
       App.Instance.UserModel = this;
 
       if( cfg != null ) {
-        Uuid = cfg.Uuid;
+        if( cfg.Uuid.StartsWith("xxx") ) cfg.Uuid = Guid.NewGuid().ToString();
+          Uuid = cfg.Uuid;
         Email = cfg.Email;
         Pass = cfg.Password;
 

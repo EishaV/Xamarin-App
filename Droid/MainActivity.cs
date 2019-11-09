@@ -13,13 +13,17 @@ namespace XamarinApp.Droid
 	[Activity (Label = "XamarinApp.Droid", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
+    public const string cn = "LandMiss";
+
     protected override void OnCreate (Bundle bundle)
 		{
-			base.OnCreate (bundle);
+      NotificationChannel ch = new NotificationChannel(cn, cn+"_name", NotificationImportance.Default);
+      NotificationManager nm = (NotificationManager)GetSystemService(NotificationService);
 
+      base.OnCreate (bundle);
 			global::Xamarin.Forms.Forms.Init (this, bundle);
-
-			LoadApplication (new App ());
+      nm.CreateNotificationChannel(ch);
+      LoadApplication(new App ());
 		}
   }
 }

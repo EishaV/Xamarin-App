@@ -74,7 +74,7 @@ namespace XamarinApp {
         else if( Math.Abs(Mower.Rrsi) < 70 ) Mower.Wifi = "Wifi_Yellow.png";
         else Mower.Wifi = "Wifi_Red.png";
       } catch( Exception ex ) {
-        Trace.TraceError("WiFi " + ex);
+        Trace.TraceError("WiFi =>" + ex);
       }
       Mower.Firmware = mqtt.Dat.Firmware;
       Mower.StartPoint = (mqtt.Cfg.MultiZonePercs[mqtt.Dat.LastZone] + 1).ToString();

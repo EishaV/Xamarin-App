@@ -92,7 +92,7 @@ namespace MqttJson{
     [DataMember(Name = "d")] public List<List<object>> Days { get; set; }
   }
 
-  [DataContract] public struct Config {
+  [DataContract] public class Config {
     [DataMember(Name = "lg")]   public string Language { get; set; } // always it :-(
     [DataMember(Name = "tm")]   public string Time { get; set; }
     [DataMember(Name = "dt")]   public string Date { get; set; }
@@ -119,7 +119,7 @@ namespace MqttJson{
     [DataMember(Name = "wt")]   public int WorkTime; // total worktim in minutes
   }
 
-  [DataContract] public struct Data {
+  [DataContract] public class Data {
     [DataMember(Name = "mac")]  public string MacAdr;
     [DataMember(Name = "fw")]   public string Firmware;
     [DataMember(Name = "bt")]   public Battery Battery;
@@ -133,7 +133,7 @@ namespace MqttJson{
   }
 
   [DataContract]
-  public struct LsMqtt {
+  public class LsMqtt {
     [DataMember(Name = "cfg")]
     public Config Cfg { get; set; }
     [DataMember(Name = "dat")]

@@ -49,15 +49,14 @@ namespace Logic {
       }
       return false;
     }
-    public bool Start(bool first = true) {
+    public bool Start() {
       _cmdQos = new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE }; // | MqttMsgBase.QOS_LEVEL_GRANTED_FAILURE 
 
       try {
         _mqtt = new MqttClient(_broker, 8883, true, null, _cert, MqttSslProtocols.TLSv1_2);
-        UI.Trace("Mqtt broker", _broker);
+        Trace.TraceInformation("Mqtt broker => {0}", _broker);
       } catch( Exception ex ) {
-        if( first ) UI.Err(ex.Message);
-        UI.Trace("Aws create failed", ex.ToString());
+        Trace.TraceError("Aws create failed {0}", ex.ToString());
         return false;
       }
 
@@ -68,18 +67,16 @@ namespace Logic {
         _mqtt.ConnectionClosed += ConnectionClosed;
 
         byte code = _mqtt.Connect(_uuid);
-        UI.Trace("Mqtt connect", string.Format("Code: {0} ({1})", code, _mqtt.IsConnected));
-        Trace.TraceInformation(string.Format("Mqtt connect -> Code: {0} State: {1}", code, _mqtt.IsConnected));
+        Trace.TraceInformation("Mqtt connect => Code: {0} State: {1}", code, _mqtt.IsConnected);
 
         _mqtt.Subscribe(_cmdOut, _cmdQos);
-        UI.Trace("Mqtt subscribe init");
+        //UI.Trace("Mqtt subscribe init");
 
         _msgId = _mqtt.Publish(_cmdIn, Encoding.ASCII.GetBytes("{}"));
         _msgPoll = true;
-        UI.Trace(string.Format("Mqtt publish send '{0}'", _msgId));
+        //UI.Trace(string.Format("Mqtt publish send '{0}'", _msgId));
       } catch( Exception ex ) {
-        if( first ) UI.Err(ex.Message);
-        UI.Trace("Aws connect failed", ex.ToString());
+        Trace.TraceError("Aws connect failed {0}", ex.ToString());
         return false;
       }
 
@@ -109,12 +106,10 @@ namespace Logic {
       _msgId = _mqtt.Publish(_cmdIn, Encoding.UTF8.GetBytes(s));
     }
     private void MqttMsgSubscribed(object sender, MqttMsgSubscribedEventArgs e) {
-      UI.Trace(string.Format("Mqtt subscribe done '{0}'", e.MessageId));
-      Trace.TraceInformation("Mqtt subscribe done -> MsgId: {0}", e.MessageId);
+      Trace.TraceInformation("Mqtt subscribe done => MsgId: {0}", e.MessageId);
     }
     private void MqttMsgPublished(object sender, MqttMsgPublishedEventArgs e) {
-      UI.Trace(string.Format("Mqtt published done '{0}' ({1})", e.MessageId, e.IsPublished));
-      Trace.TraceInformation("Mqtt published done -> MsgId: '{0}' IsPub: {1}", e.MessageId, e.IsPublished);
+      Trace.TraceInformation("Mqtt published done => MsgId: '{0}' IsPub: {1}", e.MessageId, e.IsPublished);
     }
     private void MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
       string Json = Encoding.UTF8.GetString(e.Message);
@@ -132,26 +127,23 @@ namespace Logic {
       } catch( Exception ex ) {
         string s;
 
-        UI.Trace(ex.Message);
+        Trace.TraceError(ex.Message);
         s = Encoding.UTF8.GetString(e.Message);
-        UI.Trace("Receive", s);
+        Trace.TraceError("Receive {0}", s);
       }
     }
     private void ConnectionClosed(object sender, EventArgs e) {
-      UI.Trace("Mqtt connection closed");
       Trace.TraceInformation("Mqtt connection closed");
+      return;
       for( int i = 0; i < 10; i++ ) {
         System.Threading.Thread.Sleep(10000);
         if( _mqtt.IsConnected ) {
-          UI.Trace("Mqtt is connected");
           Trace.TraceInformation("Mqtt is connected");
           break;
-        } else if( Start(false) ) {
-          UI.Trace("Mqtt reconnected");
+        } else if( Start() ) {
           Trace.TraceInformation("Mqtt reconnected");
           break;
         } else {
-          UI.Trace(string.Format("Mqtt reconnect {0} failed", i));
           Trace.TraceError("Mqtt reconnect {0} failed", i);
         }
       }

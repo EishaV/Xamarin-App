@@ -176,20 +176,18 @@ namespace Logic {
       try {
         buf = _client.UploadValues(_webapi + "oauth/token", nvc);
         str = Encoding.UTF8.GetString(buf);
-        Debug.Print("Oauth token: {0}", str);
-        UI.Trace("Oauth token", str);
+        Trace.TraceInformation("Oauth token => {0}", str);
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsOAuth));
 
           lsoa = (LsOAuth)dcjs.ReadObject(ms);
-          UI.Trace("Access token", lsoa.Token);
+          Trace.TraceInformation("Access token => {0}", lsoa.Token);
           _client.Headers["Authorization"] = string.Format("{0} {1}", lsoa.Type, lsoa.Token);
-          UI.Trace("Token type", lsoa.Type);
+          Trace.TraceInformation("Token type => {0}", lsoa.Type);
           ms.Close();
         }
       } catch( Exception ex ) {
-        UI.Err(ex.Message);
-        UI.Trace("Login 1", ex.ToString());
+        Trace.TraceError("Login 1 {0}", ex.ToString());
         return false;
       }
       #endregion
@@ -198,13 +196,13 @@ namespace Logic {
         #region Benutzer
         buf = _client.DownloadData(_webapi + "users/me");
         str = Encoding.UTF8.GetString(buf);
-        UI.Trace("User info", str);
-        Debug.Print("User info: {0}", str);
+        Trace.TraceInformation("User info => {0}", str);
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsUser));
           LsUser ku = (LsUser)dcjs.ReadObject(ms);
 
           Broker = ku.Endpoint;
+          Trace.TraceInformation("Broker => {0}", Broker);
           ms.Close();
         }
         #endregion
@@ -212,8 +210,7 @@ namespace Logic {
         #region Product items
         buf = _client.DownloadData(_webapi + "product-items");
         str = Encoding.UTF8.GetString(buf);
-        UI.Trace("Product items", str);
-        Debug.Print("Product items: {0}", str);
+        Trace.TraceInformation("Product items => {0}", str);
         str = string.Empty;
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(List<LsProductItem>));
@@ -227,8 +224,7 @@ namespace Logic {
         foreach( LsProductItem pi in Products ) {
           buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
           str = Encoding.UTF8.GetString(buf);
-          Debug.WriteLine("Status {0}: {1}", pi.Name, str);
-          UI.Trace("Status " + pi.Name, str);
+          Trace.TraceInformation("Status {0} => {1}", pi.Name, str);
           using( MemoryStream ms = new MemoryStream(buf) ) {
             DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
 
@@ -241,8 +237,7 @@ namespace Logic {
         #region Certificate
         buf = _client.DownloadData(_webapi + "users/certificate");
         str = Encoding.UTF8.GetString(buf);
-        UI.Trace("AWS Certificate", str);
-        Debug.WriteLine("AWS Certificate: {0}", str);
+        Trace.TraceInformation("AWS Certificate => {0}", str);
         using( MemoryStream ms = new MemoryStream(buf) ) {
           DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsCertificate));
           LsCertificate lsc = (LsCertificate)dcjs.ReadObject(ms);
@@ -255,13 +250,30 @@ namespace Logic {
         }
         #endregion
       } catch( Exception ex ) {
-        UI.Err(ex.Message);
-        UI.Trace("Login 2", ex.ToString());
+        Trace.TraceError("Login 2 {0}", ex.ToString());
         return false;
       }
 
       buf = null;
       return true;
+    }
+
+    public LsMqtt GetLastState(string name) {
+      LsMqtt mqtt = null;
+
+      foreach( LsProductItem pi in Products ) {
+        if( pi.Name == name ) {
+          byte[] buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
+
+          using( MemoryStream ms = new MemoryStream(buf) ) {
+            DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
+
+            mqtt = (LsMqtt)dcjs.ReadObject(ms);
+            ms.Close();
+          }
+        }
+      }
+      return mqtt;
     }
 
     public List<Activity> GetActivities(string name) {
