@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
@@ -8,8 +9,8 @@ using System.Threading;
 
 using Xamarin.Forms;
 
+using MqttJson;
 using Logic;
-using System;
 
 namespace XamarinApp {
   public class MyTraceListener : TraceListener {
@@ -39,15 +40,6 @@ namespace XamarinApp {
       App.Instance.TraceItems.Add(new TraceItem(t, s));
       LastWrite = null;
     }
-  }
-
-
-  public class TraceItem {
-    public string Name { get; set; }
-    public string Text { get; set; }
-
-    public TraceItem(string name) { Name = name; }
-    public TraceItem(string name, string text) { Name = name; Text = text; }
   }
 
   public class App : Application {
@@ -88,6 +80,38 @@ namespace XamarinApp {
     private static void OnRecv(object sender, MyEventArgs e) {
       Recv?.Invoke(sender, e);
       History.Add(new HistoryItem(DateTime.Now, e.Mqtt));
+    }
+
+    public static ObservableCollection<NotifyGroup> Notify {
+      get {
+        if( App.Instance.MainPage is MainPage) {
+          MainPage mp = App.Instance.MainPage as MainPage;
+
+          foreach( Page p in mp.Children ) {
+            if( p is NotifyPage && p.BindingContext is NotifyModel ) {
+              NotifyModel nm = p.BindingContext as NotifyModel;
+
+              return nm.Notify;
+            }
+          }
+        }
+        return null;
+      }
+    }
+
+    public static bool NotifyError(ErrorCode ec) {
+      ObservableCollection<NotifyGroup> n = Notify;
+
+      if( n != null ) {
+        foreach( NotifyGroup ng in n ) {
+          if( ng.Title == "Errors" ) {
+            foreach( NotifyItem ni in ng ) {
+              if( ni.Text == ec.ToString() ) return ni.On;
+            }
+          }
+        }
+      }
+      return false;
     }
 
     public JsonConfig Config { get; private set; }

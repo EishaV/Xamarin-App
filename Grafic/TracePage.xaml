@@ -1,24 +1,26 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:XamarinApp;assembly=XamarinApp"
              x:Class="XamarinApp.TracePage"
              Title="Trace">
-	<ContentPage.Content>
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="7*" />
-        <RowDefinition Height="3*" />
-      </Grid.RowDefinitions>
-      <ListView x:Name="trace" ItemsSource="{Binding}" SelectionMode="Single" ItemSelected="trace_ItemSelected" Grid.Row="0" >
+  <ContentPage.BindingContext>
+    <viewModels:TraceModel/>
+  </ContentPage.BindingContext>
+  <ContentPage.Content>
+    <FlexLayout x:Name="Flex" Direction="Column">
+      <ListView FlexLayout.Basis="60%" ItemsSource="{Binding TraceList}" SelectionMode="Single" SelectedItem="{Binding TraceItem, Mode=TwoWay}" HasUnevenRows="True">
         <ListView.ItemTemplate>
           <DataTemplate>
-            <TextCell Text="{Binding Name}"></TextCell>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="{Binding Name}"/>
+              </StackLayout>
+            </ViewCell>
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
-      <Editor x:Name="text" Grid.Row="1" >
-        
-      </Editor>
-	  </Grid>
+      <Editor FlexLayout.Basis="40%" Text="{Binding TraceItem.Text}" />
+    </FlexLayout>
   </ContentPage.Content>
 </ContentPage>

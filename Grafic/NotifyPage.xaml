@@ -11,15 +11,22 @@
     <viewModels:NotifyModel/>
   </ContentPage.BindingContext>  
     <ContentPage.Content>
-    <ListView ItemsSource="{Binding Notify}" IsGroupingEnabled="True" GroupDisplayBinding="{Binding Title}" HasUnevenRows="True">
+    <ListView ItemsSource="{Binding Notify}" IsGroupingEnabled="True" HasUnevenRows="True">
       <ListView.ItemTemplate>
         <DataTemplate>
-          <SwitchCell Text="{Binding Text}" On="{Binding On}" />
+          <ViewCell>
+            <StackLayout Orientation="Horizontal">
+              <Switch IsToggled="{Binding On}"/>
+              <Label Text="{Binding Text}"/>
+            </StackLayout>
+          </ViewCell>
         </DataTemplate>
       </ListView.ItemTemplate>
       <ListView.GroupHeaderTemplate>
           <DataTemplate>
-            <TextCell Text="{Binding Title}" />
+          <ViewCell>
+            <Label Text="{Binding Title}" FontAttributes="Bold"/>
+          </ViewCell>
           </DataTemplate>
         </ListView.GroupHeaderTemplate>
       </ListView>          
