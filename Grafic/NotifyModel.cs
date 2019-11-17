@@ -18,8 +18,8 @@ namespace XamarinApp {
       Title = title;
     }
   }
-  class NotifyModel : BaseView {
-    public ObservableCollection<NotifyGroup> Notify { get; private set; } = new ObservableCollection<NotifyGroup>();
+  class NotifyModel : BaseModel {
+    public ObservableCollection<NotifyGroup> Notify { get; } = App.Notify;
     public NotifyModel() {
       NotifyGroup ng;
       

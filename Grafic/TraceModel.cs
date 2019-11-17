@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
-using System.Windows.Input;
 
 using Xamarin.Forms;
 
@@ -16,8 +13,8 @@ namespace XamarinApp {
     public TraceItem(string name, string text) { Name = name; Text = text; }
   }
 
-  class TraceModel : BaseView {
-    public ObservableCollection<TraceItem> TraceList { get; private set; } = App.Instance.TraceItems;
+  class TraceModel : BaseModel {
+    public ObservableCollection<TraceItem> TraceList { get; private set; } = App.Instance.Trace;
 
     private TraceItem _Selected;
     public TraceItem TraceItem {

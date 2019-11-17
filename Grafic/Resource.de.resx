@@ -120,7 +120,28 @@
   <data name="StatusAccu" xml:space="preserve">
     <value>Akkumulator:</value>
   </data>
-  <data name="StatusWork" xml:space="preserve">
+  <data name="StatusBlade" xml:space="preserve">
+    <value>Mähzeit:</value>
+  </data>
+  <data name="StatusDist" xml:space="preserve">
+    <value>Distanz:</value>
+  </data>
+  <data name="StatusPitch" xml:space="preserve">
+    <value>Steigung: {0}°</value>
+  </data>
+  <data name="StatusRoll" xml:space="preserve">
+    <value>Neigung: {0}°</value>
+  </data>
+  <data name="StatusStamp" xml:space="preserve">
+    <value>Stand: {0}</value>
+  </data>
+  <data name="StatusToday" xml:space="preserve">
     <value>Arbeitszeit:</value>
+  </data>
+  <data name="StatusWork" xml:space="preserve">
+    <value>Laufzeit:</value>
+  </data>
+  <data name="StatusYaw" xml:space="preserve">
+    <value>Richtung: {0}°</value>
   </data>
 </root>

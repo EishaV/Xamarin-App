@@ -46,7 +46,7 @@
             <Label Text="{Binding Mower.Rrsi}" HorizontalOptions="Center"/>
           </StackLayout>
             
-          <Image Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Source="Mower.png" Aspect="AspectFit" VerticalOptions="End"/>
+          <Image Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Source="Mower.png" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="End"/>
             
           <Label Grid.Row="2" Grid.Column="2" Text="SP" />
           <Label Grid.Row="2" Grid.Column="3" Text="{Binding Mower.StartPoint, FallbackValue=0}" />
@@ -72,77 +72,106 @@
           </Label>
         </AbsoluteLayout>
 
-        <Grid Grid.Row="3">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-          </Grid.ColumnDefinitions>
-          <Image Grid.Column="0" Grid.ColumnSpan="3" Source="Work_Back.png" Aspect="Fill" />
-          <Label Grid.Column="1" VerticalOptions="Center" TextColor="Black">
+        <AbsoluteLayout Grid.Row="3">
+          <Image AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Source="Work_Back.png" Aspect="Fill" />
+          <Label AbsoluteLayout.LayoutBounds=".5,.5,-1,-1" AbsoluteLayout.LayoutFlags="PositionProportional" TextColor="Black">
             <Label.FormattedText>
               <FormattedString>
-                <Span Text="{xamarinapp:Translate StatusWork}"/>
+                <Span Text="{xamarinapp:Translate StatusToday}"/>
                 <Span Text='{Binding Mower.Start, StringFormat=" {0}"}' />
                 <Span Text="{Binding Mower.Duration, StringFormat=' {0}'}" />
               </FormattedString>
             </Label.FormattedText>
           </Label>
-        </Grid>
+        </AbsoluteLayout>
       </Grid>
 
       <!-- FlexLayout.Grow="2" Direction="Column" JustifyContent="SpaceBetween" AlignItems="Stretch" -->
-      <StackLayout BackgroundColor="DarkViolet" Margin="10,0,10,0">
-        <!--<Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>-->
-        <StackLayout x:Name="StackOrient" Orientation="Horizontal" Spacing="5" BackgroundColor="DarkBlue">
-          <StackLayout x:Name="StackRoll" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
-            <Image x:Name="ImgRoll" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Roll, StringFormat=" Neigung: {0}° "}' HorizontalOptions="Center"/>
-          </StackLayout>
-          <StackLayout x:Name="StackPitch" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
-            <Image x:Name="ImgPitch" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Pitch, StringFormat=" Steigung: {0}° "}' HorizontalOptions="Center"/>
-          </StackLayout>
-          <StackLayout x:Name="StackYaw" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="0" Spacing="0">
-            <Image x:Name="ImgYaw" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text='{Binding Mower.Yaw, StringFormat=" Richtung: {0}° "}' HorizontalOptions="Center"/>
-          </StackLayout>
-        </StackLayout>
+      <StackLayout FlexLayout.Basis="40%" BackgroundColor="DarkViolet">
+        <StackLayout.Resources>
+          <Style TargetType="Image">
+            <Setter Property="Margin" Value="10,0,10,0"/>
+          </Style>
+        </StackLayout.Resources>
+        <Grid x:Name="GridOrientP" RowSpacing="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Image Grid.Column="0" Grid.Row="0" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="Center"/>
+          <Label Grid.Column="0" Grid.Row="1" Text='{Binding Mower.Pitch, StringFormat={xamarinapp:Translate StatusPitch}}' HorizontalOptions="Center"/>
+          <Image Grid.Column="1" Grid.Row="0" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="Center"/>
+          <Label Grid.Column="1" Grid.Row="1" Text='{Binding Mower.Roll, StringFormat={xamarinapp:Translate StatusRoll}}' HorizontalOptions="Center"/>
+          <Image Grid.Column="2" Grid.Row="0" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="Center"/>
+          <Label Grid.Column="2" Grid.Row="1" Text='{Binding Mower.Yaw, StringFormat={xamarinapp:Translate StatusYaw}}' HorizontalOptions="Center"/>
+        </Grid>
 
-        <StackLayout Grid.Row="1" x:Name="StackStat" Orientation="Horizontal" Spacing="0" BackgroundColor="DarkGreen">
-          <StackLayout x:Name="StackBlade" Spacing="0" HorizontalOptions="FillAndExpand">
-            <Label Text="Mähzeit:" HorizontalOptions="StartAndExpand"/>
-            <Label Text='{Binding Mower.BladeTime, StringFormat=" {0}", FallbackValue=0.00:00:000}' HorizontalOptions="EndAndExpand"/>
-          </StackLayout>
-          <StackLayout x:Name="StackDist" Spacing="0" HorizontalOptions="FillAndExpand">
-            <Label Text="Distanz:" HorizontalOptions="StartAndExpand"/>
-            <Label Text='{Binding Mower.Distance, StringFormat=" {0:N0}m", FallbackValue=100000}' HorizontalOptions="EndAndExpand"/>
-          </StackLayout>
-          <StackLayout x:Name="StackWork" Spacing="0" HorizontalOptions="FillAndExpand">
-            <Label Text="Laufzeit:" HorizontalOptions="StartAndExpand"/>
-            <Label Text="{Binding Mower.WorkTime, StringFormat=' {0}', FallbackValue=0.00:00:00}" HorizontalOptions="EndAndExpand"/>
-          </StackLayout>
-        </StackLayout>
+        <Grid x:Name="GridStatisticP" RowSpacing="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Label Grid.Column="0" Grid.Row="0" Text='{xamarinapp:Translate StatusBlade}' HorizontalOptions="Center"/>
+          <Label Grid.Column="0" Grid.Row="1" Text='{Binding Mower.BladeTime, StringFormat="{0}"}' HorizontalOptions="Center"/>
+          <Label Grid.Column="1" Grid.Row="0" Text='{xamarinapp:Translate StatusDist}' HorizontalOptions="Center"/>
+          <Label Grid.Column="1" Grid.Row="1" Text='{Binding Mower.Distance}' HorizontalOptions="Center"/>
+          <Label Grid.Column="2" Grid.Row="0" Text="{xamarinapp:Translate StatusWork}" HorizontalOptions="Center"/>
+          <Label Grid.Column="2" Grid.Row="1" Text="{Binding Mower.WorkTime, StringFormat='{0}'}" HorizontalOptions="Center"/>
+        </Grid>
 
-        <Label Grid.Row="2" HorizontalOptions="Center" BackgroundColor="DarkKhaki">
+        <Grid x:Name="GridOrientL" RowSpacing="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <Image Grid.Column="0" Grid.Row="0" Source="Orient_Pitch.png" Aspect="AspectFit" HorizontalOptions="End"/>
+          <Label Grid.Column="1" Grid.Row="0" Text='{Binding Mower.Pitch, StringFormat={xamarinapp:Translate StatusPitch}}' HorizontalOptions="Start"/>
+          <Image Grid.Column="0" Grid.Row="1" Source="Orient_Roll.png" Aspect="AspectFit" HorizontalOptions="End"/>
+          <Label Grid.Column="1" Grid.Row="1" Text='{Binding Mower.Roll, StringFormat={xamarinapp:Translate StatusRoll}}' HorizontalOptions="Start"/>
+          <Image Grid.Column="0" Grid.Row="2" Source="Orient_Yaw.png" Aspect="AspectFit" HorizontalOptions="End"/>
+          <Label Grid.Column="1" Grid.Row="2" Text='{Binding Mower.Yaw, StringFormat={xamarinapp:Translate StatusYaw}}' HorizontalOptions="Start"/>
+        </Grid>
+
+        <Grid x:Name="GridStatisticL" RowSpacing="0" HorizontalOptions="Center">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Label Grid.Column="0" Grid.Row="0" Text='{xamarinapp:Translate StatusBlade}' HorizontalOptions="Start"/>
+          <Label Grid.Column="1" Grid.Row="0" Text='{Binding Mower.BladeTime, StringFormat="{0}"}' HorizontalOptions="End"/>
+          <Label Grid.Column="0" Grid.Row="1" Text='{xamarinapp:Translate StatusDist}' HorizontalOptions="Start"/>
+          <Label Grid.Column="1" Grid.Row="1" Text='{Binding Mower.Distance}' HorizontalOptions="End"/>
+          <Label Grid.Column="0" Grid.Row="2" Text="{xamarinapp:Translate StatusWork}" HorizontalOptions="Start"/>
+          <Label Grid.Column="1" Grid.Row="2" Text="{Binding Mower.WorkTime, StringFormat='{0}'}" HorizontalOptions="End"/>
+        </Grid>
+
+        <Label HorizontalOptions="Center" Text ="{Binding Mower.Stamp, StringFormat={xamarinapp:Translate StatusStamp}}">
           <Label.Font>
             <OnPlatform x:TypeArguments="Font">
               <On Platform="Android" Value="Normal, Italic"/>
               <On Platform="WPF" Value="Normal, Italic, Micro"/>
             </OnPlatform>
           </Label.Font>
-          <Label.FormattedText>
-            <FormattedString>
-              <Span Text="{xamarinapp:Translate StatusStamp}"/>
-              <Span Text=" "/>
-              <Span Text="{Binding Mower.Stamp, FallbackValue='19:9:19 19.9.19'}"/>
-            </FormattedString>
-          </Label.FormattedText>
         </Label>
 
         <StackLayout Grid.Row="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" BackgroundColor="DimGray">

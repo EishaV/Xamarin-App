@@ -11,7 +11,6 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
 using MqttJson;
-using BackEnd;
 
 namespace Logic {
   public class MyEventArgs :EventArgs {
@@ -40,15 +39,6 @@ namespace Logic {
       _cmdIn = cmdIn; _cmdOut = new string[] { cmdOut };
     }
 
-    public bool LoadCert() {
-      const string aws = "AWS.p12";
-
-      if( Store.Exist(aws) ) {
-        _cert = new X509Certificate2(Store.LoadBytes(aws));
-        return true;
-      }
-      return false;
-    }
     public bool Start() {
       _cmdQos = new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE }; // | MqttMsgBase.QOS_LEVEL_GRANTED_FAILURE 
 

@@ -70,11 +70,38 @@ namespace XamarinApp {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Pitch: {0}° ähnelt.
+        /// </summary>
+        internal static string StatusPitch {
+            get {
+                return ResourceManager.GetString("StatusPitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Roll: {0}° ähnelt.
+        /// </summary>
+        internal static string StatusRoll {
+            get {
+                return ResourceManager.GetString("StatusRoll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Work time: ähnelt.
         /// </summary>
         internal static string StatusWork {
             get {
                 return ResourceManager.GetString("StatusWork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Yaw: {0}° ähnelt.
+        /// </summary>
+        internal static string StatusYaw {
+            get {
+                return ResourceManager.GetString("StatusYaw", resourceCulture);
             }
         }
     }

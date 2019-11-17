@@ -13,7 +13,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net;
 
 using MqttJson;
-using BackEnd;
 
 namespace Logic {
   #region Structs
@@ -245,7 +244,7 @@ namespace Logic {
           ms.Close();
           str = lsc.Pkcs12.Replace("\\/", "/");
           buf = Convert.FromBase64String(str);
-          Store.SaveBytes("AWS.p12", buf);
+          //Store.SaveBytes("AWS.p12", buf);
           Cert = new X509Certificate2(buf);
         }
         #endregion

@@ -122,7 +122,7 @@ namespace XamarinApp {
     }
   }
 
-  class HistoryModel : BaseView {
+  class HistoryModel : BaseModel {
     public ObservableCollection<HistoryItem> History { get; private set; } = App.History;
 
     private HistoryItem _Selected;

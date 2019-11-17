@@ -37,12 +37,18 @@ namespace XamarinApp {
         t += message;
         s = string.Empty;
       }
-      App.Instance.TraceItems.Add(new TraceItem(t, s));
+      App.Instance.Trace.Add(new TraceItem(t, s));
       LastWrite = null;
     }
   }
 
   public class App : Application {
+    public static ObservableCollection<NotifyGroup> Notify { get; } = new ObservableCollection<NotifyGroup>();
+    public static ObservableCollection<HistoryItem> History { get; } = new ObservableCollection<HistoryItem>();
+
+    public static App Instance { get { return Current as App; } }
+
+
     string AppData;
     string CfgFile;
 
@@ -50,15 +56,7 @@ namespace XamarinApp {
 
     public UserModel UserModel = null;
 
-    private readonly ObservableCollection<TraceItem> _TraceItems = new ObservableCollection<TraceItem>();
-
-    public ObservableCollection<TraceItem> TraceItems { get { return _TraceItems; } }
-
-    public static ObservableCollection<HistoryItem> History { get; } = new ObservableCollection<HistoryItem>();
-
-    public static App Instance {
-      get { return Application.Current as App; }
-    }
+    public ObservableCollection<TraceItem> Trace { get; } = new ObservableCollection<TraceItem>();
 
     public static WebClient Web {
       get { return Instance?._wc; }
@@ -82,23 +80,6 @@ namespace XamarinApp {
       History.Add(new HistoryItem(DateTime.Now, e.Mqtt));
     }
 
-    public static ObservableCollection<NotifyGroup> Notify {
-      get {
-        if( App.Instance.MainPage is MainPage) {
-          MainPage mp = App.Instance.MainPage as MainPage;
-
-          foreach( Page p in mp.Children ) {
-            if( p is NotifyPage && p.BindingContext is NotifyModel ) {
-              NotifyModel nm = p.BindingContext as NotifyModel;
-
-              return nm.Notify;
-            }
-          }
-        }
-        return null;
-      }
-    }
-
     public static bool NotifyError(ErrorCode ec) {
       ObservableCollection<NotifyGroup> n = Notify;
 
@@ -117,7 +98,7 @@ namespace XamarinApp {
     public JsonConfig Config { get; private set; }
 
     public App() {
-      Trace.Listeners.Add(new MyTraceListener());
+      System.Diagnostics.Trace.Listeners.Add(new MyTraceListener());
 
       AppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
       if( !Directory.Exists(AppData) ) Directory.CreateDirectory(AppData);
@@ -129,7 +110,7 @@ namespace XamarinApp {
         try {
           Config = (JsonConfig)dcjs.ReadObject(fs);
         } catch( Exception ex ) {
-          Trace.TraceError("Read Config => {0}", ex.ToString());
+          System.Diagnostics.Trace.TraceError("Read Config => {0}", ex.ToString());
           //MainPage.DisplayAlert("Exception Config.json", ex.ToString(), ":-/");
         }
         fs.Close();
@@ -140,7 +121,7 @@ namespace XamarinApp {
 
       MainPage = new XamarinApp.MainPage();
 
-      Trace.TraceInformation("App created", Config.ToString());
+      System.Diagnostics.Trace.TraceInformation("App created", Config.ToString());
     }
 
     protected override void OnStart() {
@@ -149,7 +130,6 @@ namespace XamarinApp {
     protected override void OnSleep() {
       //Logout();
       // Handle when your app sleeps
-      DependencyService.Get<IMqttService>().Start();
     }
     protected override void OnResume() {
       DependencyService.Get<IMqttService>().Stop();

@@ -34,7 +34,7 @@ namespace XamarinApp {
     public DateTime Stamp { get; set; }
   }
 
-  public class StatusModel : BaseView {
+  public class StatusModel : BaseModel {
     public List<Mower> Mowers { get; private set; }
     public Mower Mower { get; private set; }
 

@@ -18,7 +18,7 @@ namespace XamarinApp {
     [DataMember(Name = "cmdout")] public string CmdOut;
   }
 
-  public class UserModel : BaseView {
+  public class UserModel : BaseModel {
     private string _uuid = "xxx-yyy-zzz";
     public string Uuid {
       get { return _uuid; }
