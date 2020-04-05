@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Windows.Controls;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
-namespace XamarinApp.WPF
-{
-  public partial class MainWindow : FormsApplicationPage
-  {
+namespace XamarinApp.WPF {
+  public partial class MainWindow : FormsApplicationPage {
     public MainWindow() {
       InitializeComponent();
 
@@ -16,14 +15,11 @@ namespace XamarinApp.WPF
     private bool topBarsRemoved = false;
 
     private void RemoveTopBars() {
-      //System.Windows.Controls.Grid commandBar = this.Template.FindName("PART_CommandsBar", this) as System.Windows.Controls.Grid;
-
-      //if( commandBar != null )
+      if( Template.FindName("PART_CommandsBar", this) is System.Windows.Controls.Grid cmdBar ) cmdBar.Height = 25;
       //  (commandBar.Parent as System.Windows.Controls.Grid)?.Children.Remove(commandBar);
 
-      var topAppBar = this.Template.FindName("PART_TopAppBar", this) as Xamarin.Forms.Platform.WPF.Controls.FormsAppBar; // as WpfLightToolkit.Controls.LightAppBar;
-      if( topAppBar != null )
-        (topAppBar.Parent as System.Windows.Controls.Grid)?.Children.Remove(topAppBar);
+      if( Template.FindName("PART_TopAppBar", this) is Xamarin.Forms.Platform.WPF.Controls.FormsAppBar topBar )
+        (topBar.Parent as System.Windows.Controls.Grid)?.Children.Remove(topBar);
 
       topBarsRemoved = true;
     }

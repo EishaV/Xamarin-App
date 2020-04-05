@@ -13,8 +13,66 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\Accu_Back.png" />
+    <None Remove="Images\Mower.png" />
+    <None Remove="Images\Orient_Pitch.png" />
+    <None Remove="Images\Orient_Roll.png" />
+    <None Remove="Images\Orient_Yaw.png" />
+    <None Remove="Images\Weather.png" />
+    <None Remove="Images\Weather_01.png" />
+    <None Remove="Images\Weather_01d.png" />
+    <None Remove="Images\Weather_01n.png" />
+    <None Remove="Images\Weather_02d.png" />
+    <None Remove="Images\Weather_02n.png" />
+    <None Remove="Images\Weather_03d.png" />
+    <None Remove="Images\Weather_03n.png" />
+    <None Remove="Images\Weather_04d.png" />
+    <None Remove="Images\Weather_04n.png" />
+    <None Remove="Images\Weather_09d.png" />
+    <None Remove="Images\Weather_09n.png" />
+    <None Remove="Images\Weather_10d.png" />
+    <None Remove="Images\Weather_10n.png" />
+    <None Remove="Images\Weather_11d.png" />
+    <None Remove="Images\Weather_11n.png" />
+    <None Remove="Images\Weather_13d.png" />
+    <None Remove="Images\Weather_13n.png" />
+    <None Remove="Images\Weather_50d.png" />
+    <None Remove="Images\Weather_50n.png" />
+    <None Remove="Images\Weather_Clear.png" />
+    <None Remove="Images\Weather_Clouds.png" />
+    <None Remove="Images\Weather_Mist.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Accu_Back.png" />
+    <EmbeddedResource Include="Images\Mower.png" />
+    <EmbeddedResource Include="Images\Orient_Pitch.png" />
+    <EmbeddedResource Include="Images\Orient_Roll.png" />
+    <EmbeddedResource Include="Images\Orient_Yaw.png" />
+    <EmbeddedResource Include="Images\Weather.png" />
+    <EmbeddedResource Include="Images\Weather_01d.png" />
+    <EmbeddedResource Include="Images\Weather_01n.png" />
+    <EmbeddedResource Include="Images\Weather_02d.png" />
+    <EmbeddedResource Include="Images\Weather_02n.png" />
+    <EmbeddedResource Include="Images\Weather_03d.png" />
+    <EmbeddedResource Include="Images\Weather_03n.png" />
+    <EmbeddedResource Include="Images\Weather_04d.png" />
+    <EmbeddedResource Include="Images\Weather_04n.png" />
+    <EmbeddedResource Include="Images\Weather_09d.png" />
+    <EmbeddedResource Include="Images\Weather_09n.png" />
+    <EmbeddedResource Include="Images\Weather_10d.png" />
+    <EmbeddedResource Include="Images\Weather_10n.png" />
+    <EmbeddedResource Include="Images\Weather_11d.png" />
+    <EmbeddedResource Include="Images\Weather_11n.png" />
+    <EmbeddedResource Include="Images\Weather_13d.png" />
+    <EmbeddedResource Include="Images\Weather_13n.png" />
+    <EmbeddedResource Include="Images\Weather_50d.png" />
+    <EmbeddedResource Include="Images\Weather_50n.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.1.1" />
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 using Xamarin.Forms;
@@ -19,6 +20,18 @@ namespace XamarinApp {
         return string.Format(StringFormat, Resource.ResourceManager.GetString(Text));
 
       return Resource.ResourceManager.GetString(Text);
+    }
+  }
+
+  [ContentProperty(nameof(Source))]
+  public class ImgResExtension : IMarkupExtension {
+    public string Source { get; set; }
+
+    public object ProvideValue(IServiceProvider serviceProvider) {
+      if( Source == null ) return null;
+
+      ImageSource imgsrc = ImageSource.FromResource($"XamarinApp.Images.{Source}", typeof(ImgResExtension).GetTypeInfo().Assembly);
+      return imgsrc;
     }
   }
 }

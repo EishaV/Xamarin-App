@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Windows.Input;
 
 using Logic;
@@ -37,11 +38,35 @@ namespace XamarinApp {
   public class StatusModel : BaseModel {
     public List<Mower> Mowers { get; private set; }
     public Mower Mower { get; private set; }
+    public ImageSource Wetter { get; private set; }
+    public float Temp { get; private set; }
 
-    public ICommand PollCommand { protected set; get; }
+    public ICommand CmdStart { protected set; get; }
+    public ICommand CmdStop { protected set; get; }
+    public ICommand CmdHome { protected set; get; }
+    public ICommand CmdPoll { protected set; get; }
+
+    private void Poll() {
+      App.Aws?.Poll();
+
+      Weather w = App.Web?.GetWeather(Mower.Name);
+
+      if( w != null ) {
+        string wi = w.Array[0].Icon;
+
+        Wetter = ImageSource.FromResource($"XamarinApp.Images.Weather_{wi}.png", typeof(App));
+        OnPropertyChanged(nameof(Wetter));
+        Temp = w.Main.Temp;
+        OnPropertyChanged(nameof(Temp));
+      }
+    }
 
     public StatusModel() {
-      PollCommand = new Command(() => App.Aws?.Poll());
+      CmdStart = new Command(() => App.Aws?.Publish("{\"cmd\":1}"));
+      CmdStop = new Command(() => App.Aws?.Publish("{\"cmd\":2}"));
+      CmdHome = new Command(() => App.Aws?.Publish("{\"cmd\":3}"));
+      
+      CmdPoll = new Command(() => Poll());
 
       App.Recv += Recv;
 
@@ -57,7 +82,10 @@ namespace XamarinApp {
         Accu = new Battery { Temp = 38, Volt = 50.2F },
         Start = "15:00", Duration = "240"
       };
-
+      
+      Wetter = ImageSource.FromResource($"XamarinApp.Images.Weather.png", typeof(App));
+      OnPropertyChanged(nameof(Wetter));
+      Temp = 0;
     }
 
     private void Recv(object sender, MyEventArgs e) {
@@ -65,6 +93,7 @@ namespace XamarinApp {
       string dts = string.Format("{0} {1}", mqtt.Cfg.Date, mqtt.Cfg.Time);
 
       //Invoke(new MqttDelegate(RecvInvoke));
+      Mower.Name = "Gustav";
       Mower.State = mqtt.Dat.State.ToString();
       Mower.Error = mqtt.Dat.Error != ErrorCode.NONE ? mqtt.Dat.Error.ToString() : string.Empty;
       try {

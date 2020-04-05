@@ -122,6 +122,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MqttService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +131,33 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Images\Button_Home.png">
+      <Link>Button_Home.png</Link>
+    </Content>
+    <Content Include="..\Images\Button_Pause.png">
+      <Link>Button_Pause.png</Link>
+    </Content>
+    <Content Include="..\Images\Button_Play.png">
+      <Link>Button_Play.png</Link>
+    </Content>
+    <Content Include="..\Images\Button_Poll.png">
+      <Link>Button_Poll.png</Link>
+    </Content>
+    <Content Include="..\Images\Wifi_Blue.png">
+      <Link>Wifi_Blue.png</Link>
+    </Content>
+    <Content Include="..\Images\Wifi_Gray.png">
+      <Link>Wifi_Gray.png</Link>
+    </Content>
+    <Content Include="..\Images\Wifi_Green.png">
+      <Link>Wifi_Green.png</Link>
+    </Content>
+    <Content Include="..\Images\Wifi_Red.png">
+      <Link>Wifi_Red.png</Link>
+    </Content>
+    <Content Include="..\Images\Wifi_Yellow.png">
+      <Link>Wifi_Yellow.png</Link>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -154,7 +182,7 @@
       <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.3.0.991211</Version>
+      <Version>4.5.0.530</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

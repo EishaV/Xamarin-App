@@ -3,6 +3,8 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:XamarinApp;assembly=XamarinApp"
             x:Class="XamarinApp.MainPage"
+            BarBackgroundColor="DimGray"
+            BackgroundColor="{x:OnPlatform UWP=Transparent, Default=DimGray}"
             >
 	<local:UserPage />
   <local:StatusPage />

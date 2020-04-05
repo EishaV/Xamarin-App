@@ -7,7 +7,5 @@
         xmlns:local="clr-namespace:XamarinApp.WPF"
         mc:Ignorable="d"
         Title="XamarinApp.WPF" Height="600" Width="350">
-  <Grid>
-
-  </Grid>
+  <Grid />
 </wpf:FormsApplicationPage>

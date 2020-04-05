@@ -47,7 +47,7 @@
     <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
@@ -99,11 +99,6 @@
   <ItemGroup>
     <AndroidResource Include="..\Images\Accu_Back.png">
       <Link>Resources\drawable\Accu_Back.png</Link>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="..\Images\Mower.png">
-      <Link>Resources\drawable\Mower.png</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>

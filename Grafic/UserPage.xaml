@@ -15,6 +15,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="10" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <Label Grid.Column="0" Grid.Row="0" Text="Uuid" />
       <Entry Text="{Binding Uuid}" IsEnabled="False" Grid.Row="0" Grid.Column="1" />
@@ -22,9 +23,15 @@
       <Entry Text="{Binding Email}" Placeholder="name@domain.ext" Keyboard="Email" IsSpellCheckEnabled="False" Grid.Row="1" Grid.Column="1" />
       <Label Text="Kennwort" Grid.Row="2" Grid.Column="0" />
       <Entry Text="{Binding Pass}" Placeholder="password" Keyboard="Text" IsPassword="True" Grid.Row="2" Grid.Column="1"/>
-      <StackLayout Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
-        <Button Text="Login" Clicked="OnLoginClicked" />
-        <Button Text="Test" Clicked="OnTestClicked" />
+      <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalOptions="End">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Text="Login" Clicked="OnLoginClicked" Padding="10,0,10,0" />
+        <Button Grid.Column="1" Text="Test" Clicked="OnTestClicked" Padding="10,0,10,0" />
+      </Grid>
+      <StackLayout Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
         <Label x:Name="Test"/>
         <Label Text="{Binding Testat}"/>
       </StackLayout>

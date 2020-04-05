@@ -48,7 +48,7 @@ namespace XamarinApp {
 
       if( cfg != null ) {
         if( cfg.Uuid.StartsWith("xxx") ) cfg.Uuid = Guid.NewGuid().ToString();
-          Uuid = cfg.Uuid;
+        Uuid = cfg.Uuid;
         Email = cfg.Email;
         Pass = cfg.Password;
 

@@ -104,7 +104,7 @@ namespace Logic {
     private void MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
       string Json = Encoding.UTF8.GetString(e.Message);
 
-      Debug.WriteLine(Json, "Aws.Recv");
+      Trace.TraceInformation("Mqtt received => {0}", Json);
       try {
         MemoryStream ms = new MemoryStream(e.Message);
         DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
@@ -117,9 +117,9 @@ namespace Logic {
       } catch( Exception ex ) {
         string s;
 
-        Trace.TraceError(ex.Message);
+        Trace.TraceError("Mqtt received eception => {0}", ex.ToString());
         s = Encoding.UTF8.GetString(e.Message);
-        Trace.TraceError("Receive {0}", s);
+        Trace.TraceError("Mqtt received message => {0}", s);
       }
     }
     private void ConnectionClosed(object sender, EventArgs e) {

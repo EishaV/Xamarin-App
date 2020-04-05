@@ -145,158 +145,224 @@ namespace Logic {
   }
   #endregion
 
+  #region Weather
+  /*
+  {
+    "coord":{"lon":12.4,"lat":50.52},
+    "weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04n"}],
+    "base":"stations",
+    "main":{"temp":4.29,"pressure":1005,"humidity":93,"temp_min":2.22,"temp_max":6},
+    "visibility":10000,
+    "wind":{"speed":5.7,"deg":100},
+    "clouds":{"all":90},
+    "dt":1574534869,
+    "sys":{"type":1,"id":6836,"country":"DE","sunrise":1574491035,"sunset":1574522189},
+    "timezone":3600,"id":2954602,"name":"Auerbach","cod":200}
+
+    
+    "weather":[
+      {"id":701,"main":"Mist","description":"mist","icon":"50d"},
+      {"id":741,"main":"Fog","description":"fog","icon":"50d"}
+    ]
+    "weather":[{"id":701,"main":"Mist","description":"mist","icon":"50n"}],
+  */
+
+  [DataContract]
+  public struct WeatherArray {
+    [DataMember(Name = "id")] public int Id;
+    [DataMember(Name = "main")] public string Main;
+    [DataMember(Name = "description")] public string Desc;
+    [DataMember(Name = "icon")] public string Icon;
+  }
+
+  [DataContract]
+  public struct WeatherMain {
+    [DataMember(Name = "temp")] public float Temp;
+    [DataMember(Name = "pressure")] public int Pressure;
+    [DataMember(Name = "humidity")] public int Humidity;
+  }
+
+  [DataContract]
+  public class Weather {
+    [DataMember(Name = "weather")] public WeatherArray[] Array;
+    [DataMember(Name = "main")] public WeatherMain Main;
+    [DataMember(Name = "name")] public string Name;
+  }
+  #endregion
+
   public class WebClient {
-    private string _webapi, _token;
-    private System.Net.WebClient _client = new System.Net.WebClient();
+  private string _webapi, _token;
+  private System.Net.WebClient _client = new System.Net.WebClient();
 
-    public List<LsProductItem> Products = new List<LsProductItem>();
-    public List<LsMqtt> States = new List<LsMqtt>();
+  public List<LsProductItem> Products = new List<LsProductItem>();
+  public List<LsMqtt> States = new List<LsMqtt>();
 
-    public string Broker { get; private set; }
-    public X509Certificate2 Cert { get; private set; }
+  public string Broker { get; private set; }
+  public X509Certificate2 Cert { get; private set; }
 
-    public WebClient(string webapi, string token) {
-      _webapi = webapi; _token = token;
+  public WebClient(string webapi, string token) {
+    _webapi = webapi; _token = token;
+  }
+
+  public bool Login(string mail, string pass, string uuid) {
+    NameValueCollection nvc = new NameValueCollection();
+    LsOAuth lsoa;
+    string str;
+    byte[] buf;
+
+    #region Anmeldung
+    nvc.Add("username", mail);
+    nvc.Add("password", pass);
+    nvc.Add("grant_type", "password");
+    nvc.Add("client_id", "1");
+    nvc.Add("client_secret", _token);
+    nvc.Add("scope", "*");
+    try {
+      buf = _client.UploadValues(_webapi + "oauth/token", nvc);
+      str = Encoding.UTF8.GetString(buf);
+      Trace.TraceInformation("Oauth token => {0}", str);
+      using( MemoryStream ms = new MemoryStream(buf) ) {
+        DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsOAuth));
+
+        lsoa = (LsOAuth)dcjs.ReadObject(ms);
+        Trace.TraceInformation("Access token => {0}", lsoa.Token);
+        _client.Headers["Authorization"] = string.Format("{0} {1}", lsoa.Type, lsoa.Token);
+        Trace.TraceInformation("Token type => {0}", lsoa.Type);
+        ms.Close();
+      }
+    } catch( Exception ex ) {
+      Trace.TraceError("Login 1 {0}", ex.ToString());
+      return false;
     }
+    #endregion
 
-    public bool Login(string mail, string pass, string uuid) {
-      NameValueCollection nvc = new NameValueCollection();
-      LsOAuth lsoa;
-      string str;
-      byte[] buf;
+    try {
+      #region Benutzer
+      buf = _client.DownloadData(_webapi + "users/me");
+      str = Encoding.UTF8.GetString(buf);
+      Trace.TraceInformation("User info => {0}", str);
+      using( MemoryStream ms = new MemoryStream(buf) ) {
+        DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsUser));
+        LsUser ku = (LsUser)dcjs.ReadObject(ms);
 
-      #region Anmeldung
-      nvc.Add("username", mail);
-      nvc.Add("password", pass);
-      nvc.Add("grant_type", "password");
-      nvc.Add("client_id", "1");
-      nvc.Add("client_secret", _token);
-      nvc.Add("scope", "*");
-      try {
-        buf = _client.UploadValues(_webapi + "oauth/token", nvc);
-        str = Encoding.UTF8.GetString(buf);
-        Trace.TraceInformation("Oauth token => {0}", str);
-        using( MemoryStream ms = new MemoryStream(buf) ) {
-          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsOAuth));
-
-          lsoa = (LsOAuth)dcjs.ReadObject(ms);
-          Trace.TraceInformation("Access token => {0}", lsoa.Token);
-          _client.Headers["Authorization"] = string.Format("{0} {1}", lsoa.Type, lsoa.Token);
-          Trace.TraceInformation("Token type => {0}", lsoa.Type);
-          ms.Close();
-        }
-      } catch( Exception ex ) {
-        Trace.TraceError("Login 1 {0}", ex.ToString());
-        return false;
+        Broker = ku.Endpoint;
+        Trace.TraceInformation("Broker => {0}", Broker);
+        ms.Close();
       }
       #endregion
 
-      try {
-        #region Benutzer
-        buf = _client.DownloadData(_webapi + "users/me");
-        str = Encoding.UTF8.GetString(buf);
-        Trace.TraceInformation("User info => {0}", str);
-        using( MemoryStream ms = new MemoryStream(buf) ) {
-          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsUser));
-          LsUser ku = (LsUser)dcjs.ReadObject(ms);
+      #region Product items
+      buf = _client.DownloadData(_webapi + "product-items");
+      str = Encoding.UTF8.GetString(buf);
+      Trace.TraceInformation("Product items => {0}", str);
+      str = string.Empty;
+      using( MemoryStream ms = new MemoryStream(buf) ) {
+        DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(List<LsProductItem>));
 
-          Broker = ku.Endpoint;
-          Trace.TraceInformation("Broker => {0}", Broker);
-          ms.Close();
-        }
-        #endregion
-
-        #region Product items
-        buf = _client.DownloadData(_webapi + "product-items");
-        str = Encoding.UTF8.GetString(buf);
-        Trace.TraceInformation("Product items => {0}", str);
-        str = string.Empty;
-        using( MemoryStream ms = new MemoryStream(buf) ) {
-          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(List<LsProductItem>));
-
-          Products = (List<LsProductItem>)dcjs.ReadObject(ms);
-          ms.Close();
-        }
-        #endregion
-
-        #region Status
-        foreach( LsProductItem pi in Products ) {
-          buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
-          str = Encoding.UTF8.GetString(buf);
-          Trace.TraceInformation("Status {0} => {1}", pi.Name, str);
-          using( MemoryStream ms = new MemoryStream(buf) ) {
-            DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
-
-            States.Add((LsMqtt)dcjs.ReadObject(ms));
-            ms.Close();
-          }
-        }
-        #endregion
-
-        #region Certificate
-        buf = _client.DownloadData(_webapi + "users/certificate");
-        str = Encoding.UTF8.GetString(buf);
-        Trace.TraceInformation("AWS Certificate => {0}", str);
-        using( MemoryStream ms = new MemoryStream(buf) ) {
-          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsCertificate));
-          LsCertificate lsc = (LsCertificate)dcjs.ReadObject(ms);
-
-          ms.Close();
-          str = lsc.Pkcs12.Replace("\\/", "/");
-          buf = Convert.FromBase64String(str);
-          //Store.SaveBytes("AWS.p12", buf);
-          Cert = new X509Certificate2(buf);
-        }
-        #endregion
-      } catch( Exception ex ) {
-        Trace.TraceError("Login 2 {0}", ex.ToString());
-        return false;
+        Products = (List<LsProductItem>)dcjs.ReadObject(ms);
+        ms.Close();
       }
+      #endregion
 
-      buf = null;
-      return true;
-    }
-
-    public LsMqtt GetLastState(string name) {
-      LsMqtt mqtt = null;
-
+      #region Status
       foreach( LsProductItem pi in Products ) {
-        if( pi.Name == name ) {
-          byte[] buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
+        buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
+        str = Encoding.UTF8.GetString(buf);
+        Trace.TraceInformation("Status {0} => {1}", pi.Name, str);
+        using( MemoryStream ms = new MemoryStream(buf) ) {
+          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
 
-          using( MemoryStream ms = new MemoryStream(buf) ) {
-            DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
-
-            mqtt = (LsMqtt)dcjs.ReadObject(ms);
-            ms.Close();
-          }
+          States.Add((LsMqtt)dcjs.ReadObject(ms));
+          ms.Close();
         }
       }
-      return mqtt;
-    }
+      #endregion
 
-    public List<Activity> GetActivities(string name) {
-      List<Activity> ls = new List<Activity>();
+      #region Certificate
+      buf = _client.DownloadData(_webapi + "users/certificate");
+      str = Encoding.UTF8.GetString(buf);
+      Trace.TraceInformation("AWS Certificate => {0}", str);
+      using( MemoryStream ms = new MemoryStream(buf) ) {
+        DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsCertificate));
+        LsCertificate lsc = (LsCertificate)dcjs.ReadObject(ms);
 
-      foreach( LsProductItem pi in Products ) {
-        if( pi.Name == name ) {
-          byte[] buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/activity-log");
-
-          if( buf != null ) {
-            MemoryStream ms = new MemoryStream(buf);
-            DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(List<Activity>));
-
-            ls = dcjs.ReadObject(ms) as List<Activity>;
-            foreach( Activity a in ls ) {
-              ActivityPayload p = a.Payload;
-
-              Trace.TraceInformation("{0}: {1} - {2} - {3} - {4}", a.Stamp, p.Dat.LastError, p.Dat.LastState, p.Dat.Battery.Charging, p.Dat.Battery.Miss);
-            }
-            ms.Close();
-          }
-        }
+        ms.Close();
+        str = lsc.Pkcs12.Replace("\\/", "/");
+        buf = Convert.FromBase64String(str);
+        //Store.SaveBytes("AWS.p12", buf);
+        Cert = new X509Certificate2(buf);
       }
-      return ls;
+      #endregion
+    } catch( Exception ex ) {
+      Trace.TraceError("Login 2 {0}", ex.ToString());
+      return false;
     }
+
+    buf = null;
+    return true;
   }
+
+  public LsMqtt GetLastState(string name) {
+    LsMqtt mqtt = null;
+
+    foreach( LsProductItem pi in Products ) {
+      if( pi.Name == name ) {
+        byte[] buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/status");
+
+        using( MemoryStream ms = new MemoryStream(buf) ) {
+          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(LsMqtt));
+
+          mqtt = (LsMqtt)dcjs.ReadObject(ms);
+          ms.Close();
+        }
+      }
+    }
+    return mqtt;
+  }
+
+  public Weather GetWeather(string name) {
+    Weather data = null;
+
+    foreach( LsProductItem pi in Products ) {
+      if( pi.Name == name ) {
+        byte[] buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/weather/current");
+        string str;
+
+        str = Encoding.UTF8.GetString(buf);
+        Trace.TraceInformation("Web weather => {0}", str);
+        using( MemoryStream ms = new MemoryStream(buf) ) {
+          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(Weather));
+
+          data = (Weather)dcjs.ReadObject(ms);
+          ms.Close();
+        }
+      }
+    }
+    return data;
+  }
+
+  public List<Activity> GetActivities(string name) {
+    List<Activity> ls = new List<Activity>();
+
+    foreach( LsProductItem pi in Products ) {
+      if( pi.Name == name ) {
+        byte[] buf = _client.DownloadData(_webapi + "product-items/" + pi.SerialNo + "/activity-log");
+
+        if( buf != null ) {
+          MemoryStream ms = new MemoryStream(buf);
+          DataContractJsonSerializer dcjs = new DataContractJsonSerializer(typeof(List<Activity>));
+
+          ls = dcjs.ReadObject(ms) as List<Activity>;
+          //foreach( Activity a in ls ) {
+          //  ActivityPayload p = a.Payload;
+
+          //  Trace.TraceInformation("{0}: {1} - {2} - {3} - {4}", a.Stamp, p.Dat.LastError, p.Dat.LastState, p.Dat.Battery.Charging, p.Dat.Battery.Miss);
+          //}
+          ms.Close();
+        }
+      }
+    }
+    return ls;
+  }
+}
 }

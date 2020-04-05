@@ -70,6 +70,24 @@ namespace XamarinApp {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Blade time: ähnelt.
+        /// </summary>
+        internal static string StatusBlade {
+            get {
+                return ResourceManager.GetString("StatusBlade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Distance: ähnelt.
+        /// </summary>
+        internal static string StatusDist {
+            get {
+                return ResourceManager.GetString("StatusDist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Pitch: {0}° ähnelt.
         /// </summary>
         internal static string StatusPitch {
@@ -88,7 +106,25 @@ namespace XamarinApp {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Work time: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Stamp: {0} ähnelt.
+        /// </summary>
+        internal static string StatusStamp {
+            get {
+                return ResourceManager.GetString("StatusStamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Todays work: ähnelt.
+        /// </summary>
+        internal static string StatusToday {
+            get {
+                return ResourceManager.GetString("StatusToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Run time: ähnelt.
         /// </summary>
         internal static string StatusWork {
             get {

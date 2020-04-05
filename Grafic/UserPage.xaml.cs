@@ -21,10 +21,11 @@ namespace XamarinApp {
     }
 
     void OnTestClicked(object sender, EventArgs args) {
-      string sys = DependencyService.Get<IMqttService>().GetSystem();
-      Test.Text = sys;
+      //string sys = DependencyService.Get<IMqttService>().GetSystem();
+      //Test.Text = sys;
 
-      bool b = App.NotifyError(MqttJson.ErrorCode.NONE);
+      //bool b = App.NotifyError(MqttJson.ErrorCode.NONE);
+      App.Web.GetWeather("Gustav");
     }
   }
 }
