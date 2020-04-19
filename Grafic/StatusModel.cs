@@ -93,7 +93,7 @@ namespace XamarinApp {
       string dts = string.Format("{0} {1}", mqtt.Cfg.Date, mqtt.Cfg.Time);
 
       //Invoke(new MqttDelegate(RecvInvoke));
-      Mower.Name = "Gustav";
+      Mower.Name = App.Web.Products[0].Name;
       Mower.State = mqtt.Dat.State.ToString();
       Mower.Error = mqtt.Dat.Error != ErrorCode.NONE ? mqtt.Dat.Error.ToString() : string.Empty;
       try {

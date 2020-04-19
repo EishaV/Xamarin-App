@@ -20,9 +20,9 @@
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
-            <StackLayout Orientation="Horizontal">
-              <Switch IsToggled="{Binding On}"/>
-              <Label Text="{Binding Text}"/>
+            <StackLayout Orientation="Horizontal" Margin="0" Padding="0">
+              <Switch IsToggled="{Binding On}" Margin="0"/>
+              <Label Text="{Binding Text}" Margin="0" Padding="0" VerticalOptions="Center"/>
             </StackLayout>
           </ViewCell>
         </DataTemplate>

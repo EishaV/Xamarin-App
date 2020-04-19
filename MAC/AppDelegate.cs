@@ -15,7 +15,7 @@ namespace XamarinApp.MAC
         {
             var style = NSWindowStyle.Closable | NSWindowStyle.Resizable | NSWindowStyle.Titled;
 
-            var rect = new CoreGraphics.CGRect(500, 1000, 500, 500);
+            var rect = new CoreGraphics.CGRect(500, 500, 450, 500);
             _window = new NSWindow(rect, style, NSBackingStore.Buffered, false);
             _window.Title = "Xamarin.Forms on Mac!";
             _window.TitleVisibility = NSWindowTitleVisibility.Hidden;

@@ -15,6 +15,7 @@ using Logic;
 namespace XamarinApp {
   public class MyTraceListener : TraceListener {
     string LastWrite = null;
+
     public override void Write(string message) {
       LastWrite = message;
     }
@@ -151,6 +152,10 @@ namespace XamarinApp {
           if( ac.Start() ) {
             XamarinApp.App.Aws = ac;
             DependencyService.Get<IMqttService>().Start();
+
+            TabbedPage tp = MainPage as TabbedPage;
+
+            tp.CurrentPage = tp.Children[1];
           } else MainPage.DisplayAlert("Alert", "Connect failed see Trace", ":-(");
         } else MainPage.DisplayAlert("Alert", "Login failed see Trace", ":-(");
       }

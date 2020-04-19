@@ -9,13 +9,12 @@
   </ContentPage.BindingContext>
   <ContentPage.Content>
     <FlexLayout x:Name="Flex" Direction="Column">
-      <ListView FlexLayout.Basis="60%" ItemsSource="{Binding TraceList}" SelectionMode="Single" SelectedItem="{Binding TraceItem, Mode=TwoWay}" HasUnevenRows="True">
+      <ListView FlexLayout.Basis="60%" ItemsSource="{Binding TraceList}" SelectionMode="Single" SelectedItem="{Binding TraceItem, Mode=TwoWay}"
+                HasUnevenRows="False" RowHeight="{OnPlatform macOS=16 WPF=20}">
         <ListView.ItemTemplate>
           <DataTemplate>
             <ViewCell>
-              <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                <Label Text="{Binding Name}"/>
-              </StackLayout>
+              <Label Text="{Binding Name}"/>
             </ViewCell>
           </DataTemplate>
         </ListView.ItemTemplate>

@@ -2,14 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:self="clr-namespace:XamarinApp"
-             x:Class="XamarinApp.StatusPage"
+             x:Class="XamarinApp.StatusPage" x:Name="statusPage"
              Title="Status" BackgroundColor="DimGray">
   <ContentPage.Content>
     <FlexLayout Direction="Column" x:Name="FlexMain" Padding="10,0,10,0">
       <FlexLayout.Resources>
         <Style TargetType="Label">
           <Setter Property="VerticalOptions" Value="Center"/>
-          <Setter Property="TextColor" Value="White"/>
+          <Setter Property="TextColor" Value="{OnPlatform macOS=Black, Default=White}"/>
         </Style>
       </FlexLayout.Resources>
       <Grid FlexLayout.Basis="60%" Padding="5">
@@ -21,10 +21,10 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" VerticalOptions="FillAndExpand">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -62,12 +62,9 @@
           <Label Text="{Binding Mower.Error, FallbackValue=Error}" HorizontalTextAlignment="Start" FontSize="Medium"/>
         </StackLayout>
 
-        <AbsoluteLayout Grid.Row="2" Padding="0">
-          <Image AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" 
-                 Source="{self:ImgRes Accu_Back.png}" Aspect="Fill"
-                 HeightRequest="{x:OnPlatform macOS=40,Default=24}" />
-          <Label AbsoluteLayout.LayoutBounds=".5,.5,-1,-1" AbsoluteLayout.LayoutFlags="PositionProportional"
-                 TextColor="Black" FontSize="Medium">
+        <Frame Grid.Row="2" BackgroundColor="Gray" BorderColor="Yellow"
+                 CornerRadius="10" HasShadow="True" Margin="10,2,10,2" Padding="2">
+          <Label FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
             <Label.FormattedText>
               <FormattedString>
                 <Span Text="{self:Translate StatusAccu}"/>
@@ -76,19 +73,19 @@
               </FormattedString>
             </Label.FormattedText>
           </Label>
-        </AbsoluteLayout>
+        </Frame>
 
-        <Frame Grid.Row="3" BackgroundColor="Silver" BorderColor="Blue" CornerRadius="10" HasShadow="True"
-               Padding="2" >
-          <Label TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
-            <Label.FormattedText>
-              <FormattedString>
-                <Span Text="{self:Translate StatusToday}"/>
-                <Span Text='{Binding Mower.Start, StringFormat=" {0}"}' />
-                <Span Text="{Binding Mower.Duration, StringFormat=' {0}'}" />
-              </FormattedString>
-            </Label.FormattedText>
-          </Label>
+        <Frame Grid.Row="3" BackgroundColor="Gray" BorderColor="Blue"
+                 CornerRadius="10" HasShadow="True" Margin="10,2,10,2" Padding="2">
+            <Label FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
+              <Label.FormattedText>
+                <FormattedString>
+                  <Span Text="{self:Translate StatusToday}"/>
+                  <Span Text='{Binding Mower.Start, StringFormat=" {0}"}' />
+                  <Span Text="{Binding Mower.Duration, StringFormat=' {0}'}" />
+                </FormattedString>
+              </Label.FormattedText>
+            </Label>
         </Frame>
       </Grid>
 
@@ -127,10 +124,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <Label Grid.Column="0" Grid.Row="0" Text='{self:Translate StatusBlade}' HorizontalOptions="Center"/>
-          <Label Grid.Column="0" Grid.Row="1" Text='{Binding Mower.BladeTime, StringFormat="{0}"}' HorizontalOptions="Center"/>
-          <Label Grid.Column="1" Grid.Row="0" Text='{self:Translate StatusDist}' HorizontalOptions="Center"/>
-          <Label Grid.Column="1" Grid.Row="1" Text='{Binding Mower.Distance}' HorizontalOptions="Center"/>
+          <Label Grid.Column="0" Grid.Row="0" Text="{self:Translate StatusBlade}" HorizontalOptions="Center"/>
+          <Label Grid.Column="0" Grid.Row="1" Text="{Binding Mower.BladeTime, StringFormat='{0}'}" HorizontalOptions="Center"/>
+          <Label Grid.Column="1" Grid.Row="0" Text="{self:Translate StatusDist}" HorizontalOptions="Center"/>
+          <Label Grid.Column="1" Grid.Row="1" Text="{Binding Mower.Distance, StringFormat='{0:N0}'}" HorizontalOptions="Center"/>
           <Label Grid.Column="2" Grid.Row="0" Text="{self:Translate StatusWork}" HorizontalOptions="Center"/>
           <Label Grid.Column="2" Grid.Row="1" Text="{Binding Mower.WorkTime, StringFormat='{0}'}" HorizontalOptions="Center"/>
         </Grid>

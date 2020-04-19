@@ -10,11 +10,11 @@
   <ContentPage.Content>
     <StackLayout x:Name="Main" Orientation="Vertical">
 
-      <ListView x:Name="Master" ItemsSource="{Binding History}" SelectionMode="Single" SelectedItem="{Binding HistoryItem, Mode=TwoWay}" RowHeight="30">
+      <ListView x:Name="Master" ItemsSource="{Binding History}" SelectionMode="Single" SelectedItem="{Binding HistoryItem, Mode=TwoWay}">
         <ListView.ItemTemplate>
           <DataTemplate>
             <ViewCell>
-              <Grid RowSpacing="0">
+              <Grid RowSpacing="0" Margin="0" Padding="0">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="Auto"/>
@@ -91,6 +91,9 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
           </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
           <Button Grid.Column="1" Text="Server" Command="{Binding CmdServer}" />
           <Button Grid.Column="3" Text="Local" Command="{Binding CmdLocal}" />
         </Grid>
