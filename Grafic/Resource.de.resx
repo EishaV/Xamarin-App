@@ -117,6 +117,105 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Errors" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ERROR_BATTERY_CHARGE_ERROR" xml:space="preserve">
+    <value>Ladefehler</value>
+  </data>
+  <data name="ERROR_BATTERY_LOW" xml:space="preserve">
+    <value>Akku schwach</value>
+  </data>
+  <data name="ERROR_BATTERY_OVERTEMP" xml:space="preserve">
+    <value>Akku heiß/kalt</value>
+  </data>
+  <data name="ERROR_HOME_FIND_TIMEOUT" xml:space="preserve">
+    <value>Heimfahrt - Timeout</value>
+  </data>
+  <data name="ERROR_LIFTED" xml:space="preserve">
+    <value>Mäher angehoben</value>
+  </data>
+  <data name="ERROR_LOCK" xml:space="preserve">
+    <value>Mäher gesperrt</value>
+  </data>
+  <data name="ERROR_MOTOR_BLADE_FAULT" xml:space="preserve">
+    <value>Mähwerk blockiert</value>
+  </data>
+  <data name="ERROR_MOTOR_WHEELS_FAULT" xml:space="preserve">
+    <value>Antrieb blockiert</value>
+  </data>
+  <data name="ERROR_OUTSIDE_WIRE" xml:space="preserve">
+    <value>Mäher außerhalb</value>
+  </data>
+  <data name="ERROR_RAINING" xml:space="preserve">
+    <value>Regenverzögerung</value>
+  </data>
+  <data name="ERROR_REVERSE_WIRE" xml:space="preserve">
+    <value>Draht vertauscht</value>
+  </data>
+  <data name="ERROR_TRAPPED" xml:space="preserve">
+    <value>Mäher gefangen</value>
+  </data>
+  <data name="ERROR_TRAPPED_TIMEOUT_FAULT" xml:space="preserve">
+    <value>Gefangen - Timeout</value>
+  </data>
+  <data name="ERROR_UPSIDE_DOWN" xml:space="preserve">
+    <value>Mäher umgedreht</value>
+  </data>
+  <data name="ERROR_WIRE_MISSING" xml:space="preserve">
+    <value>Draht fehlt</value>
+  </data>
+  <data name="States" xml:space="preserve">
+    <value>Zustände</value>
+  </data>
+  <data name="STATE_AREA_SEARCH" xml:space="preserve">
+    <value>Suche Zone</value>
+  </data>
+  <data name="STATE_AREA_TRAINING" xml:space="preserve">
+    <value>Trainiere Zone</value>
+  </data>
+  <data name="STATE_BLADE_RECOVERY" xml:space="preserve">
+    <value>Blockiert beheben</value>
+  </data>
+  <data name="STATE_BORDER_CUT" xml:space="preserve">
+    <value>Schneide Kante</value>
+  </data>
+  <data name="STATE_FOLLOW_WIRE" xml:space="preserve">
+    <value>Folge Draht</value>
+  </data>
+  <data name="STATE_GOING_HOME" xml:space="preserve">
+    <value>Fahre Heim</value>
+  </data>
+  <data name="STATE_GRASS_CUTTING" xml:space="preserve">
+    <value>Mähen</value>
+  </data>
+  <data name="STATE_HOME" xml:space="preserve">
+    <value>Daheim</value>
+  </data>
+  <data name="STATE_IDLE" xml:space="preserve">
+    <value>Leerlauf</value>
+  </data>
+  <data name="STATE_LEAVE_HOUSE" xml:space="preserve">
+    <value>Verlasse Heim</value>
+  </data>
+  <data name="STATE_LIFT_RECOVERY" xml:space="preserve">
+    <value>Angehoben beheben</value>
+  </data>
+  <data name="STATE_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="STATE_SEARCHING_HOME" xml:space="preserve">
+    <value>Suche Heim</value>
+  </data>
+  <data name="STATE_SEARCHING_WIRE" xml:space="preserve">
+    <value>Suche Draht</value>
+  </data>
+  <data name="STATE_START_SEQUENCE" xml:space="preserve">
+    <value>Starte Sequenz</value>
+  </data>
+  <data name="STATE_TRAPPED_RECOVERY" xml:space="preserve">
+    <value>Gefangen beheben</value>
+  </data>
   <data name="StatusAccu" xml:space="preserve">
     <value>Akkumulator:</value>
   </data>

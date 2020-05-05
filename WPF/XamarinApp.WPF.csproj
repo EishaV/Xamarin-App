@@ -129,17 +129,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\Images\Orient_Pitch.png">
-      <Link>Orient_Pitch.png</Link>
-    </Resource>
-    <Resource Include="..\Images\Orient_Roll.png">
-      <Link>Orient_Roll.png</Link>
-    </Resource>
-    <Resource Include="..\Images\Orient_Yaw.png">
-      <Link>Orient_Yaw.png</Link>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="..\Images\Wifi_Blue.png">
       <Link>Wifi_Blue.png</Link>
     </Resource>
