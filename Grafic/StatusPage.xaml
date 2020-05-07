@@ -33,9 +33,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <Image Grid.Row="0" Grid.Column="0" Source="{Binding Wetter}" HorizontalOptions="Center" VerticalOptions="End" Margin="10" />
-          <Label Grid.Row="1" Grid.Column="0" Text="{Binding Temp, StringFormat='{0:N1}°C'}" HorizontalOptions="Center" />
-          <Label Grid.Row="0" Grid.Column="1" Text="{Binding Mower.Name, FallbackValue='Miss Land'}"
+          <Image Grid.Row="0" Grid.Column="0" Source="{Binding Wetter}" HorizontalOptions="Center" VerticalOptions="End" Aspect="AspectFit"/>
+          <Label Grid.Row="1" Grid.Column="0" Text="{Binding Temp, StringFormat=' {0:N1}°C'}" HorizontalOptions="Center" />
+          <Label Grid.Row="0" Grid.Column="1" Text="{Binding Mower.Name}"
                  HorizontalOptions="Center" TextColor="Yellow" FontAttributes="Bold">
             <Label.FontSize>Title<!--
               <OnPlatform x:TypeArguments="x:Double">
@@ -45,7 +45,7 @@
               </OnPlatform> -->
             </Label.FontSize>
           </Label>
-          <Image Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Source="{Binding Mower.Wifi}" HorizontalOptions="Center" Margin="10" />
+          <Image Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Source="{Binding Mower.Wifi}" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit"/>
           <Label Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Mower.Rrsi}"  HorizontalOptions="Center" />
 
           <Image Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="2" HorizontalOptions="Center" VerticalOptions="End"
@@ -68,7 +68,7 @@
             <Label.FormattedText>
               <FormattedString>
                 <Span Text="{self:Translate StatusAccu}"/>
-                <Span Text='{Binding Mower.Accu.Volt, StringFormat=" {0}V"}'  />
+                <Span Text="{Binding Mower.Accu.Volt, StringFormat=' {0}V'}"  />
                 <Span Text="{Binding Mower.Accu.Temp, StringFormat=' {0}°C'}" />
               </FormattedString>
             </Label.FormattedText>
