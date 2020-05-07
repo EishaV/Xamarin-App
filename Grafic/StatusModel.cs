@@ -36,6 +36,8 @@ namespace XamarinApp {
   }
 
   public class StatusModel : BaseModel {
+    DateTime lastWeather = DateTime.MinValue;
+
     public List<Mower> Mowers { get; private set; }
     public Mower Mower { get; private set; }
     public ImageSource Wetter { get; private set; }
@@ -46,9 +48,7 @@ namespace XamarinApp {
     public ICommand CmdHome { protected set; get; }
     public ICommand CmdPoll { protected set; get; }
 
-    private void Poll() {
-      App.Aws?.Poll();
-
+    private void Weather() {
       Weather w = App.Web?.GetWeather(Mower.Name);
 
       if( w != null ) {
@@ -59,6 +59,11 @@ namespace XamarinApp {
         Temp = w.Main.Temp;
         OnPropertyChanged(nameof(Temp));
       }
+    }
+
+    private void Poll() {
+      App.Aws?.Poll();
+      Weather();
     }
 
     public StatusModel() {
@@ -94,8 +99,9 @@ namespace XamarinApp {
 
       //Invoke(new MqttDelegate(RecvInvoke));
       Mower.Name = App.Web.Products[0].Name;
-      Mower.State = mqtt.Dat.State.ToString();
-      Mower.Error = mqtt.Dat.Error != ErrorCode.NONE ? mqtt.Dat.Error.ToString() : string.Empty;
+      Mower.State = Resource.ResourceManager.GetString("STATE_" + mqtt.Dat.State.ToString());
+      if( mqtt.Dat.Error == ErrorCode.NONE ) Mower.Error = string.Empty;
+      else Mower.Error = Resource.ResourceManager.GetString("ERROR_" + mqtt.Dat.Error.ToString());
       try {
         Mower.Rrsi = mqtt.Dat.RecvSignal;
         if( Math.Abs(Mower.Rrsi) < 50 ) Mower.Wifi = "Wifi_Green.png";
@@ -116,6 +122,11 @@ namespace XamarinApp {
       Mower.Distance = mqtt.Dat.Statistic.Distance;
       Mower.Stamp = DateTime.ParseExact(dts, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
       OnPropertyChanged(nameof(Mower));
+
+      if( DateTime.Now - lastWeather > TimeSpan.FromMinutes(30) ) {
+        Weather();
+        lastWeather = DateTime.Now;
+      }
     }
   }
 }

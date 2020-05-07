@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace MqttJson{
   #region Enums
   public enum ErrorCode : int {
-    UNK = -1,
+    //UNK = -1,
     NONE = 0,
     TRAPPED = 1,
     LIFTED = 2,
@@ -25,7 +25,7 @@ namespace MqttJson{
     BATTERY_OVERTEMP = 17
   }
   public enum StatusCode : int {
-    UNK = -1,
+    //UNK = -1,
     IDLE = 0,
     HOME = 1,
     START_SEQUENCE = 2,
@@ -37,8 +37,8 @@ namespace MqttJson{
     LIFT_RECOVERY = 8,
     TRAPPED_RECOVERY = 9,
     BLADE_RECOVERY = 10,
-    DEBUG = 11,
-    REMOTE_CONTROL = 12,
+    //DEBUG = 11,
+    //REMOTE_CONTROL = 12,
     GOING_HOME = 30,
     AREA_TRAINING = 31,
     BORDER_CUT = 32,

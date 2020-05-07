@@ -25,11 +25,14 @@ namespace XamarinApp {
     public NotifyModel() {
       NotifyGroup ng;
       
-      ng = new NotifyGroup("Errors");
-      foreach( string s in Enum.GetNames(typeof(ErrorCode)) ) ng.Add(new NotifyItem() { Text=s });
+      ng = new NotifyGroup(Resource.ResourceManager.GetString("Errors"));
+      foreach( ErrorCode ec in Enum.GetValues(typeof(ErrorCode)) ) {
+        if( ec != ErrorCode.NONE )
+          ng.Add(new NotifyItem() { Text = Resource.ResourceManager.GetString("ERROR_" + ec.ToString()) });
+      }
       Notify.Add(ng);
-      ng = new NotifyGroup("States");
-      foreach( string s in Enum.GetNames(typeof(StatusCode)) ) ng.Add(new NotifyItem() { Text=s });
+      ng = new NotifyGroup(Resource.ResourceManager.GetString("States"));
+      foreach( string s in Enum.GetNames(typeof(StatusCode)) ) ng.Add(new NotifyItem() { Text = Resource.ResourceManager.GetString("STATE_" + s) });
       Notify.Add(ng);
     }
   }
