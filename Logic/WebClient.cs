@@ -231,7 +231,7 @@ namespace Logic {
         ms.Close();
       }
     } catch( Exception ex ) {
-      Trace.TraceError("Login 1 {0}", ex.ToString());
+      Trace.TraceError("Login 1 => {0}", ex.ToString());
       return false;
     }
     #endregion
@@ -294,7 +294,7 @@ namespace Logic {
       }
       #endregion
     } catch( Exception ex ) {
-      Trace.TraceError("Login 2 {0}", ex.ToString());
+      Trace.TraceError("Login 2 => {0}", ex.ToString());
       return false;
     }
 
