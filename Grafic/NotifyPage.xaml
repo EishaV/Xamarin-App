@@ -3,31 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:XamarinApp;assembly=XamarinApp"
              x:Class="XamarinApp.NotifyPage"
-             Title="Notiz">
+             Title="Notiz"
+             >
   <ContentPage.BindingContext>
     <viewModels:NotifyModel/>
   </ContentPage.BindingContext>  
   <ContentPage.Content>
-    <ListView ItemsSource="{Binding Notify}" IsGroupingEnabled="True" HasUnevenRows="False">
-      <ListView.GroupHeaderTemplate>
-        <DataTemplate>
-          <TextCell Text="{Binding Title}" />
-          <!--<ViewCell>
+    <StackLayout Orientation="Vertical">
+      <ListView ItemsSource="{Binding Notify}" IsGroupingEnabled="True" HasUnevenRows="False">
+        <ListView.GroupHeaderTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Title}" />
+            <!--<ViewCell>
             <Label Text="test" FontAttributes="Bold"/>
           </ViewCell>-->
-        </DataTemplate>
-      </ListView.GroupHeaderTemplate>
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <ViewCell>
-            <StackLayout Orientation="Horizontal" Margin="0" Padding="0">
-              <Switch IsToggled="{Binding On}" Margin="0"/>
-              <Label Text="{Binding Text}" Margin="0" Padding="0" VerticalOptions="Center"/>
-            </StackLayout>
-          </ViewCell>
-        </DataTemplate>
-      </ListView.ItemTemplate>
-
-    </ListView>
+          </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal" Margin="0" Padding="0">
+                <Switch IsToggled="{Binding On}" Margin="0"/>
+                <Label Text="{Binding Text}" Margin="0" Padding="0" VerticalOptions="Center"/>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </StackLayout>
   </ContentPage.Content>
 </ContentPage>

@@ -15,18 +15,11 @@ using MqttJson;
 
 [assembly: Dependency(typeof(MqttService))]
 namespace XamarinApp.Droid {
-  public static class Constants {
-    public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;
-    public const string SERVICE_STARTED_KEY = "has_service_been_started";
-
-    public const string ACTION_START_SERVICE = "ServicesDemo3.action.START_SERVICE";
-    public const string ACTION_STOP_SERVICE = "ServicesDemo3.action.STOP_SERVICE";
-    public const string ACTION_MAIN_ACTIVITY = "ServicesDemo3.action.MAIN_ACTIVITY";
-  }
-
   [BroadcastReceiver]
   public class RepeatingAlarm : BroadcastReceiver {
     public override void OnReceive(Context context, Intent intent) {
+      System.Diagnostics.Debug.WriteLine("Alarm {0} {1}", DateTime.Now, "ups");
+
       //Every time the `RepeatingAlarm` is fired, set the next alarm
       //Intent intent = new Intent(context, typeof(RepeatingAlarm));
       PendingIntent source = PendingIntent.GetBroadcast(context, 0, intent, 0);
@@ -36,9 +29,27 @@ namespace XamarinApp.Droid {
       if( mqtt != null ) {
         mqtt.Dat.Firmware = "1.23";
         App.History.Add(new HistoryItem(DateTime.Now, mqtt));
-        System.Diagnostics.Debug.WriteLine("Alarm {0} {1}", DateTime.Now, "ups");
+
+        //Context context = Android.App.Application.Context;
+        //AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+        NotificationManager nm = (NotificationManager)context.GetSystemService(Context.NotificationService);
+
+        if( App.NotifyMsg(mqtt.Dat) ) {
+          var notIntent = new Intent(context, typeof(MainActivity));
+          var contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
+          // Build the notification:
+          var builder = new Notification.Builder(context, MainActivity.cn)
+                      .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+                      .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
+                      .SetContentTitle("Notify") // Set the title
+                                                //.SetNumber(count) // Display the count in the Content Info
+                      .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
+                      .SetContentText(mqtt.Dat.State.ToString()); // the message to display.
+                                                                  // Finally, publish the notification:
+          nm.Notify(1000, builder.Build());
+        }
       }
-      am.SetAndAllowWhileIdle(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + 30 * 60 * 1000, source);
+      am.SetAndAllowWhileIdle(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + 5 * 60 * 1000, source);
       //Toast.MakeText(context, "repeating_received and after 15s another alarm will be fired", ToastLength.Short).Show();
     }
   }
@@ -56,7 +67,7 @@ namespace XamarinApp.Droid {
       NotificationManager nm = (NotificationManager)context.GetSystemService(Context.NotificationService);
 
       _penint = PendingIntent.GetBroadcast(context, 0, new Intent(context, typeof(RepeatingAlarm)), 0);
-      am.SetAndAllowWhileIdle(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + 30 * 60 * 1000, _penint);
+      am.SetAndAllowWhileIdle(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + 3 * 60 * 1000, _penint);
 
       var notIntent = new Intent(context, typeof(MainActivity));
       var contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
@@ -84,6 +95,15 @@ namespace XamarinApp.Droid {
 }
 
 /*
+  public static class Constants {
+    public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;
+    public const string SERVICE_STARTED_KEY = "has_service_been_started";
+
+    public const string ACTION_START_SERVICE = "ServicesDemo3.action.START_SERVICE";
+    public const string ACTION_STOP_SERVICE = "ServicesDemo3.action.STOP_SERVICE";
+    public const string ACTION_MAIN_ACTIVITY = "ServicesDemo3.action.MAIN_ACTIVITY";
+  }
+
     Intent startServiceIntent;
     Intent stopServiceIntent;
 

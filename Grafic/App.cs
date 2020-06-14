@@ -81,14 +81,19 @@ namespace XamarinApp {
       History.Add(new HistoryItem(DateTime.Now, e.Mqtt));
     }
 
-    public static bool NotifyError(ErrorCode ec) {
+    public static bool NotifyMsg(MqttJson.Data dat) {
       ObservableCollection<NotifyGroup> n = Notify;
 
       if( n != null ) {
         foreach( NotifyGroup ng in n ) {
-          if( ng.Title == "Errors" ) {
+          if( ng.Tag == "Errors" ) {
             foreach( NotifyItem ni in ng ) {
-              if( ni.Text == ec.ToString() ) return ni.On;
+              if( ni.Code == (int)dat.Error ) return ni.On;
+            }
+          }
+          if( ng.Tag == "States" ) {
+            foreach( NotifyItem ni in ng ) {
+              if( ni.Code == (int)dat.State ) return ni.On;
             }
           }
         }
