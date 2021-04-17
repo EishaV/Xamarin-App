@@ -6,6 +6,8 @@ using Android.Widget;
 using System;
 using System.Security.Cryptography.X509Certificates;
 
+using Android.Support.V4.App;
+
 using Xamarin.Forms;
 
 using XamarinApp.Droid;
@@ -37,15 +39,15 @@ namespace XamarinApp.Droid {
         if( App.NotifyMsg(mqtt.Dat) ) {
           var notIntent = new Intent(context, typeof(MainActivity));
           var contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
-          // Build the notification:
-          var builder = new Notification.Builder(context, MainActivity.cn)
-                      .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
-                      .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
-                      .SetContentTitle("Notify") // Set the title
-                                                //.SetNumber(count) // Display the count in the Content Info
-                      .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
-                      .SetContentText(mqtt.Dat.State.ToString()); // the message to display.
-                                                                  // Finally, publish the notification:
+
+          var builder = new NotificationCompat.Builder(context, MainActivity.cn)
+                  .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+                  .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
+                  .SetContentTitle("Notify") // Set the title
+                  //.SetNumber(count) // Display the count in the Content Info
+                  .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
+                  .SetContentText(mqtt.Dat.State.ToString()); // the message to display.
+
           nm.Notify(1000, builder.Build());
         }
       }
@@ -71,16 +73,29 @@ namespace XamarinApp.Droid {
 
       var notIntent = new Intent(context, typeof(MainActivity));
       var contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
+      //// Build the notification:
+      //var builderOld = new Notification.Builder(context, MainActivity.cn)
+      //              .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+      //              .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
+      //              .SetContentTitle("title") // Set the title
+      //              //.SetNumber(count) // Display the count in the Content Info
+      //              .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
+      //              .SetContentText("message start"); // the message to display.
+      //                                        // Finally, publish the notification:
+      //nm.Notify(1000, builderOld.Build());
+
       // Build the notification:
-      var builder = new Notification.Builder(context, MainActivity.cn)
-                    .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
-                    .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
-                    .SetContentTitle("title") // Set the title
-                    //.SetNumber(count) // Display the count in the Content Info
-                    .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
-                    .SetContentText("message start"); // the message to display.
-                                              // Finally, publish the notification:
+      var builder = new NotificationCompat.Builder(context, MainActivity.cn)
+                  .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+                  .SetContentIntent(contentIntent) // Start up this activity when the user clicks the intent.
+                  .SetContentTitle("Title") // Set the title
+                  //.SetNumber(count) // Display the count in the Content Info
+                  .SetSmallIcon(Resource.Drawable.Icon_Notify) // This is the icon to display
+                  .SetContentText($"Notificatin start"); // the message to display.
+
+      // Finally, publish the notification:
       nm.Notify(1000, builder.Build());
+
       return true;
     }
     public bool Stop() {

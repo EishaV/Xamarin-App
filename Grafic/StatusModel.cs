@@ -117,8 +117,8 @@ namespace XamarinApp {
       Mower.Pitch = mqtt.Dat.Orient[0];
       Mower.Roll = mqtt.Dat.Orient[1];
       Mower.Yaw = mqtt.Dat.Orient[2];
-      Mower.WorkTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.WorkTime);
-      Mower.BladeTime = TimeSpan.FromSeconds(mqtt.Dat.Statistic.Blade);
+      Mower.WorkTime = TimeSpan.FromMinutes(mqtt.Dat.Statistic.WorkTime);
+      Mower.BladeTime = TimeSpan.FromMinutes(mqtt.Dat.Statistic.Blade);
       Mower.Distance = mqtt.Dat.Statistic.Distance;
       Mower.Stamp = DateTime.ParseExact(dts, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
       OnPropertyChanged(nameof(Mower));

@@ -15,14 +15,15 @@ namespace XamarinApp.Droid
 	{
     public const string cn = "LandMiss";
 
-    protected override void OnCreate (Bundle bundle)
-		{
-      NotificationChannel ch = new NotificationChannel(cn, cn+"_name", NotificationImportance.Default);
-      NotificationManager nm = (NotificationManager)GetSystemService(NotificationService);
-
+    protected override void OnCreate (Bundle bundle) {
       base.OnCreate (bundle);
 			global::Xamarin.Forms.Forms.Init (this, bundle);
-      nm.CreateNotificationChannel(ch);
+      if( Build.VERSION.SdkInt >= BuildVersionCodes.O ) {
+        NotificationChannel ch = new NotificationChannel(cn, cn+"_name", NotificationImportance.Default);
+        NotificationManager nm = (NotificationManager)GetSystemService(NotificationService);
+
+        nm.CreateNotificationChannel(ch);
+      }
       LoadApplication(new App ());
 		}
   }
